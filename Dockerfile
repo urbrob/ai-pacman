@@ -1,6 +1,12 @@
-FROM python:3.8
-COPY . /app
-WORKDIR /app
+FROM python:3.7
+
+RUN mkdir /srv/app
+WORKDIR /srv/app
+COPY . /srv/app
+
+# install dependencies
 RUN pip install -r requirements.txt
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+
+ENV FLASK_APP app.py
+
+CMD ["flask", "run", "--host=0.0.0.0"]
