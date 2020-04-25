@@ -1,11 +1,11 @@
 from flask import Flask, render_template, jsonify
+from pymongo import MongoClient
 
-from api.ai_tools.save_data_tools import validate_if_data_is_valid_to_save, format_saving_data_to_save, save_data_to_database
-from api.ai_tools.predict_data_tools import validate_data_to_predict_move, format_data_to_predict_move, predicted_move_with_ai, format_predicted_move
+from ai_tools.save_data_tools import validate_if_data_is_valid_to_save, format_saving_data_to_save, save_data_to_database
+from ai_tools.predict_data_tools import validate_data_to_predict_move, format_data_to_predict_move, _predicted_move_with_ai, format_predicted_move
 
 app = Flask(__name__, static_url_path="/static")
-app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
-mongo = PyMongo(app)
+mongo = MongoClient()
 
 @app.route("/api/save_move", methods=["POST"])
 def save_pacman_move_to_database():
