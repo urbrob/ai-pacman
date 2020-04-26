@@ -1,4 +1,4 @@
-from keras.models import load_model
+#from keras.models import load_model
 
 
 model = None # Model for our instance, we use it as global to do not reload it every time
@@ -20,5 +20,5 @@ def format_predicted_move(prediction):
 def _predicted_move_with_ai(data):
     if model is None:
         global models
-        model = load_model()
+        #model = load_model() # Uncomment when beta version is ready. Right now it takes to long to build requirements
     return model.predict(data)
