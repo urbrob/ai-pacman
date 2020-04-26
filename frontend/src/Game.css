@@ -1,0 +1,22 @@
+.Field {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    /*background-image: url("test.png");*/
+}
+.div-table {
+    display: table;
+    width: auto;
+    height: auto;
+    background-color: #3aee1e;
+}
+.div-table-row {
+    /*display: table-row; !*co za zjebane gowno dla debili - rozjebie ci tabelke ze o ja pierdole*!*/
+    width: auto;
+    clear: both;
+}
+.div-table-col {
+    float: left; /* fix for  buggy browsers */
+    display: table-column;
+    background-color: #cc1215;
+}
