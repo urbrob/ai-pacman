@@ -1,21 +1,24 @@
 import React from 'react';
 import './Game.css';
-import test from './test.png'
+import floor from './floor.png'
+import wall from './wall.png'
+import gameMap from './game_map'
 
 class Game extends React.Component {
 
      createBoard = () => {
          let board = [];
 
-         for(let i = 0; i < 10; i++) {
+         gameMap.map((row) => {
              let children = [];
-             for(let j = 0; j < 10; j++) {
-                 children.push(<div className="div-table-col" id={`div-table-col_${i}_${j}`}>
-                     {Field(test)}
+             row.fields.map((field) => {
+                 children.push(<div className="div-table-col" id={`div-table-col_${row.row_id}_${field.col_id}`}>
+                     {Field(field.field_type)}
                  </div>)
-             }
+             });
              board.push(<div className="div-table-row">{children}</div>)
-         }
+         });
+
          return <div className="div-table">{board}</div>;
      };
 
@@ -29,8 +32,9 @@ class Game extends React.Component {
 }
 
 function Field(value) {
+    let parsedValue = value === "wall" ? wall : floor; //TODO refactor this
     return(
-        <div className="Field" style={{ backgroundImage:`url(${value}`}} />
+        <div className="Field" style={{ backgroundImage:`url(${parsedValue}`}} />
     )
 }
 
