@@ -3,7 +3,7 @@
 
 model = None # Model for our instance, we use it as global to do not reload it every time
 
-def validate_data_to_predict_move(data) -> bool:
+def validate_data_to_predict_move(data):
     """EDITABLE. This function task is to validate if data from request is good for prediction"""
     return True
 
