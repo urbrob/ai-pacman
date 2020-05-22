@@ -1,9 +1,9 @@
 'use strict';
 module.exports = function(app) {
-    var todoList = require('../controllers/pacmanController');
+    var pacman = require('../controllers/pacmanController');
 
     // Routes
     app.route('/game')
-        .get(todoList.current_state);
-
+        .get(pacman.current_state)
+        .post(pacman.update);
 };
