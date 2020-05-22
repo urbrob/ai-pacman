@@ -26,8 +26,10 @@ def data():
 
 @app.route("/")
 def debug():
+    ret_str = ""
     for row in db.get_all():
-        return str(row['1'])
+        ret_str += str(row['1'])
+    return ret_str
 
 
 if __name__ == '__main__':

@@ -10,4 +10,4 @@ def format_saving_data_to_save(data):
 
 def save_data_to_database(db, data):
     for row in data:
-        db.add_one({"1": row[0]})
+        db.add_one({"1": row})
