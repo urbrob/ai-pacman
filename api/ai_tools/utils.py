@@ -15,12 +15,17 @@ def validate_if_entry_data_is_valid(data):
     else:
         return "Request need payload."
 
+
 def save_data_to_database(db, data):
     db.add_one(data)
+
+
+def _predict_move_from_ai(data):
+    return model.predict(data)
 
 
 def predicted_move_from_ai(data):
     if model is None:
         global models
-        #model = load_model() # Uncomment when beta version is ready. Right now it takes to long to build requirements
-    return model.predict(data)
+        model = load_model("pacman.h5")
+    return _predict_move_from_ai(data)

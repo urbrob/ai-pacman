@@ -3,11 +3,13 @@ from flask import Flask, render_template, jsonify, request
 from mongo import MongoHandler
 from ai_tools import tools, utils
 from werkzeug.exceptions import BadRequest
+from flask_caching import Cache
 
 def create_app(testing=False):
     app = Flask(__name__)
 
     db = MongoHandler(app, testing)
+    cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
     @app.route("/api/save_move", methods=["POST"])
     def save_pacman_move_to_database():

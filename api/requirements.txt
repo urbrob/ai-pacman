@@ -3,3 +3,6 @@ Keras
 flask_pymongo
 jsonschema
 Flask-Testing
+Flask-Caching
+tensorflow
+pymongo
