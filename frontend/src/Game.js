@@ -57,15 +57,26 @@ class Game extends React.Component {
         document.getElementById('div-table-col_' + this.current.row + '_'
             + this.current.col + '_field').innerText = 'x';
 
-        let uri = "http://10.7.232.168:5678/game";
+        let uri = "http://192.168.99.100:5678/game";
         fetch(uri, {
-            method: 'post',
-            headers: {'Content-Type':'application/json'},
-            body: {
-                "col": this.current.col,
-                "row": this.current.row
-            }
-        }).then((res) => console.log(res))
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.current)
+        })
+            .then(response => response.json())
+            .then(data => console.log(data));
+
+        // let uri = "http://10.7.232.168:5678/game";
+        // fetch(uri, {
+        //     method: 'post',
+        //     headers: {'Content-Type':'application/json'},
+        //     body: {
+        //         "col": this.current.col,
+        //         "row": this.current.row
+        //     }
+        // }).then((res) => console.log(res))
     };
 
     validateMove = (row, col) => {
