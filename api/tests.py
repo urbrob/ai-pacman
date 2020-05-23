@@ -46,7 +46,8 @@ class ApiTestCase(TestCase):
             "ghost_1": {"x": 1, "y": 2},
             "ghost_2": {"x": 1, "y": 2},
             "ghost_3": {"x": 1, "y": 2},
-            "ghost_5": {"x": 1, "y": 2}
+            "ghost_5": {"x": 1, "y": 2},
+            "direction": "w"
         }
         response = self.client.post("/api/save_move", json=self.payload, content_type='application/json')
         self.assertEqual(response.status_code, 400)
