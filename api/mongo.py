@@ -6,7 +6,8 @@ mongo = None
 
 
 class MongoHandler:
-    def __init__(self, app):
+    def __init__(self, app, testing=False):
+        self.testing = testing
         self.app = app
 
     def __get_mongo(self):
@@ -16,13 +17,18 @@ class MongoHandler:
             self.app.config["MONGO_URI"] = "mongodb://root:pass@mongodb:27017/db?authSource=admin"
         if not mongo:
             mongo = PyMongo(self.app)
-        return mongo
+        if self.testing:
+            return mongo.db.test
+        return mongo.db.move
 
     def get_all(self):
-        return self.__get_mongo().db.move.find({})
+        return self.__get_mongo().find({})
 
     def add_one(self, data):
-        return self.__get_mongo().db.move.insert_one(data)
+        return self.__get_mongo().insert_one(data)
 
     def add_many(self, data):
-        return self.__get_mongo().db.move.insert_many(data)
+        return self.__get_mongo().insert_many(data)
+
+    def remove_all(self):
+        return self.__get_mongo().drop()
