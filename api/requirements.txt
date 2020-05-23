@@ -1,0 +1,5 @@
+Flask==1.1.1
+Keras
+flask_pymongo
+jsonschema
+Flask-Testing

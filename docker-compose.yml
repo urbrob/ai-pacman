@@ -2,10 +2,25 @@ version: '3'
 
 services:
   server:
-    build: .
+    build: ./api
+    restart: unless-stopped
     environment:
-      FLASK_ENV: development
+      MONGODB_DATABASE: db
+      MONGODB_USERNAME: user
+      MONGODB_PASSWORD: pass
+      MONGODB_HOSTNAME: mongodb
+    ports:
+      - 5000:5000
     volumes:
       - .:/srv/app
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
     ports:
-      - 8000:5000
+      - 27017:27017
