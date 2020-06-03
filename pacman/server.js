@@ -4,6 +4,7 @@ var express = require('express'),
 
 
 var routes = require('./api/routes/pacmanRoutes'); //importing route
+app.use(express.json());
 routes(app); //register the route
 
 app.listen(port);

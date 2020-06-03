@@ -1,25 +1,11 @@
 'use strict';
 
-var current = {
-    "row": 0,
-    "col": 0
-};
+var model = require('../model/pacmanModel');
 
 exports.current_state = function(req, res) {
-    res.set('Access-Control-Allow-Origin', '*');
-    res.json({
-        "row": current.row,
-        "col": current.col
-    })
+    res.json(model.getPosition())
 };
-
-exports.update = function(req, res) {
-    current.row = req.body.row;
-    current.col = req.body.col;
-
-    res.set('Access-Control-Allow-Origin', '*');
-    res.json({
-        "row": current.row,
-        "col": current.col
-    })
+exports.move = function (req, res) {
+    let obj = JSON.parse(JSON.stringify(req.body));
+    res.json(model.move(obj.direction));
 };

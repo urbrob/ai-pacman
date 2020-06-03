@@ -5,5 +5,5 @@ module.exports = function(app) {
     // Routes
     app.route('/game')
         .get(pacman.current_state)
-        .post(pacman.update);
+        .post(pacman.move)
 };
