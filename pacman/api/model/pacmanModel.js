@@ -35,3 +35,9 @@ exports.validateMove = function (position) {
         .find(colMap => colMap.col_id === position.col).field_type;
     return (field && field === "floor")
 };
+
+exports.startGame = function () {
+    pacmanPosition.col = 1;
+    pacmanPosition.row = 1;
+    return pacmanPosition;
+};

@@ -9,3 +9,7 @@ exports.move = function (req, res) {
     let obj = JSON.parse(JSON.stringify(req.body));
     res.json(model.move(obj.direction));
 };
+exports.startGame = function (req, res) {
+    let obj = JSON.parse(JSON.stringify(req.body));
+    res.json(model.startGame());
+};

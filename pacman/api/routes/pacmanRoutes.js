@@ -5,5 +5,8 @@ module.exports = function(app) {
     // Routes
     app.route('/game')
         .get(pacman.current_state)
-        .post(pacman.move)
+        .post(pacman.move);
+
+    app.route('/startGame')
+        .post(pacman.startGame)
 };
