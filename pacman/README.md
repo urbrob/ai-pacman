@@ -4,7 +4,7 @@
 Make sure you are in the ai-pacman/pacman directory.
 
 ## Run
-`docker run -itd -p 5678:5678 --net ai-pacman --name pacman pacman:dev`
+`docker run -itd -p 5678:5678 --name pacman pacman:dev`
 
 ## Check 
 It may depend on yours OS:

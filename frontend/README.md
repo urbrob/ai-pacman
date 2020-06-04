@@ -4,7 +4,7 @@
 Make sure you are in the ai-pacman/frontend directory.
 
 ## Run
-`docker run -itd -p 3000:3000 --net ai-pacman --name front front:dev`
+`docker run -itd -p 3000:3000 --name front front:dev`
 
 ## Check 
 It may depend on yours OS:
