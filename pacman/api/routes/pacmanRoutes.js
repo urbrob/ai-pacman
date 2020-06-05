@@ -7,6 +7,6 @@ module.exports = function(app) {
         .get(pacman.current_state)
         .post(pacman.move);
 
-    app.route('/startGame')
+    app.route('/start')
         .post(pacman.startGame)
 };

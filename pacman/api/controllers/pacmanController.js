@@ -1,15 +1,16 @@
 'use strict';
 
-var model = require('../model/pacmanModel');
+var pacmanModel = require('../models/unitModel');
+var gameModel = require('../models/gameModel');
 
 exports.current_state = function(req, res) {
-    res.json(model.getPosition())
+    res.json(gameModel.game.getPositions());
 };
 exports.move = function (req, res) {
     let obj = JSON.parse(JSON.stringify(req.body));
-    res.json(model.move(obj.direction));
+    res.json(gameModel.game.pacmanMove(obj.direction));
 };
 exports.startGame = function (req, res) {
     let obj = JSON.parse(JSON.stringify(req.body));
-    res.json(model.startGame());
+    res.json(gameModel.game.startGame());
 };

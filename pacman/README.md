@@ -1,3 +1,11 @@
+##Endpoints
+`GET|POST /game`
+
+React POSTs player movement in format `{"direction": "left"}` (left|right|up|down) 
+
+`POST /start`
+
+(Re)Starts game
 ## Build
 `docker build -t pacman:dev .`
 
