@@ -6,6 +6,9 @@ import gameMap from './game_map'
 
 class Game extends React.Component {
 
+    // replace it with your docker-machine default ip address ('docker-machine ip default' in CLI)
+    pacmanApiUri = "http://192.168.99.100:5678/startGame";
+
     current = {
         "row": 1,
         "col": 1
@@ -44,7 +47,7 @@ class Game extends React.Component {
         document.getElementById('div-table-col_' + this.current.row + '_'
             + this.current.col + '_field').innerText = '';
 
-        fetch("http://192.168.99.100:5678/game", {
+        fetch(this.pacmanApiUri, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -62,7 +65,7 @@ class Game extends React.Component {
 
     startGame = () => {
 
-        fetch("http://192.168.99.100:5678/startGame", {
+        fetch(pacmanApiUri, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
