@@ -6,6 +6,9 @@ import gameMap from './game_map'
 
 class Game extends React.Component {
 
+    // replace it with your docker-machine default ip address ('docker-machine ip default' in CLI)
+    pacmanApiUri = "http://192.168.99.100:5678/startGame";
+
     current = {
         "row": 1,
         "col": 1
@@ -36,36 +39,48 @@ class Game extends React.Component {
         else if(event.key === "ArrowDown") this.move("down");
     };
 
-    move = (direction) => {
-        document.getElementById('div-table-col_' + this.current.row + '_'
-            + this.current.col + '_field').innerText = '';
-        let previous = {
-            "row": this.current.row,
-            "col": this.current.col
+    move = (direct) => {
+        const dataToPost = {
+            direction: direct
         };
 
-        if(direction === "right") this.current.col += 1;
-        else if(direction === "left") this.current.col -= 1;
-        else if(direction === "up") this.current.row -= 1;
-        else if(direction === "down")this.current.row += 1;
-
-        if(!this.validateMove(this.current.row, this.current.col)) {
-            this.current.row = previous.row;
-            this.current.col = previous.col;
-        }
-
         document.getElementById('div-table-col_' + this.current.row + '_'
-            + this.current.col + '_field').innerText = 'x';
-    };
+            + this.current.col + '_field').innerText = '';
 
-    validateMove = (row, col) => {
-        let field = gameMap.find(rowMap => rowMap.row_id === row).fields
-            .find(colMap => colMap.col_id === col).field_type;
-        return (field && field === "floor")
+        fetch(this.pacmanApiUri, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataToPost)
+        })
+            .then(response => response.json())
+            .then(data => {
+                this.current.row = data.row;
+                this.current.col = data.col;
+                document.getElementById('div-table-col_' + this.current.row + '_'
+                    + this.current.col + '_field').innerText = 'x';
+            });
     };
 
     startGame = () => {
-        document.getElementById('div-table-col_1_1_field').innerText = 'x';
+
+        fetch(pacmanApiUri, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({action: 'startGame'})
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('div-table-col_' + this.current.row + '_'
+                    + this.current.col + '_field').innerText = '';
+
+                this.current.row = data.row;
+                this.current.col = data.col;
+                document.getElementById('div-table-col_1_1_field').innerText = 'x';
+            });
     };
 
     render() {
