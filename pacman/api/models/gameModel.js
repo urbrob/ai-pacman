@@ -8,33 +8,8 @@ class PacmanGame {
 
     }
 
-    move(direction, unit) {
-        let previous = {
-            row: unit.position.row,
-            col: unit.position.col
-        };
-
-        if(direction === "right") unit.position.col += 1;
-        else if(direction === "left") unit.position.col -= 1;
-        else if(direction === "up") unit.position.row -= 1;
-        else if(direction === "down") unit.position.row += 1;
-
-        if(!this.validateMove(unit.position)) {
-            unit.position.row = previous.row;
-            unit.position.col = previous.col
-        }
-
-        return unit.position
-    };
-
-    validateMove(position) {
-        let field = gameMap.find(rowMap => rowMap.row_id === position.row).fields
-            .find(colMap => colMap.col_id === position.col).field_type;
-        return (field && field === "floor")
-    };
-
     pacmanMove(direction) {
-        this.pacman.position = this.move(direction, this.pacman);
+        this.pacman.move(direction);
         return this.getPositions();
     };
 
