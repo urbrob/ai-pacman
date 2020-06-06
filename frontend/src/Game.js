@@ -9,9 +9,13 @@ class Game extends React.Component {
     // replace it with your docker-machine default ip address ('docker-machine ip default' in CLI)
     pacmanApiUri = "http://192.168.99.100:5678";
 
-    current = {
+    pacman = {
         "row": 1,
         "col": 1
+    };
+    ghost = {
+        row: 8,
+        col:8
     };
 
     createBoard = () => {
@@ -44,8 +48,10 @@ class Game extends React.Component {
             direction: direct
         };
 
-        document.getElementById('div-table-col_' + this.current.row + '_'
-            + this.current.col + '_field').innerText = '';
+        document.getElementById('div-table-col_' + this.pacman.row + '_'
+            + this.pacman.col + '_field').innerText = '';
+        document.getElementById('div-table-col_' + this.ghost.row + '_'
+            + this.ghost.col + '_field').innerText = '';
 
         fetch(this.pacmanApiUri + '/game', {
             method: 'POST',
@@ -56,10 +62,14 @@ class Game extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.current.row = data.row;
-                this.current.col = data.col;
-                document.getElementById('div-table-col_' + this.current.row + '_'
-                    + this.current.col + '_field').innerText = 'x';
+                this.pacman.row = data.pacman.row;
+                this.pacman.col = data.pacman.col;
+                this.ghost.row = data.ghost.row;
+                this.ghost.col = data.ghost.col;
+                document.getElementById('div-table-col_' + this.pacman.row + '_'
+                    + this.pacman.col + '_field').innerText = 'x';
+                document.getElementById('div-table-col_' + this.ghost.row + '_'
+                    + this.ghost.col + '_field').innerText = 'G';
             });
     };
 
@@ -74,12 +84,15 @@ class Game extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('div-table-col_' + this.current.row + '_'
-                    + this.current.col + '_field').innerText = '';
+                document.getElementById('div-table-col_' + this.pacman.row + '_'
+                    + this.pacman.col + '_field').innerText = '';
+                document.getElementById('div-table-col_' + this.ghost.row + '_'
+                    + this.ghost.col + '_field').innerText = '';
 
-                this.current.row = data.row;
-                this.current.col = data.col;
+                this.pacman.row = data.pacman.row;
+                this.pacman.col = data.pacman.col;
                 document.getElementById('div-table-col_1_1_field').innerText = 'x';
+                document.getElementById('div-table-col_8_8_field').innerText = 'G';
             });
     };
 

@@ -1,26 +1,38 @@
 'use strict';
 var gameMap = require('./game_map');
-var pacmanModel = require('./unitModel');
+var unitModel = require('./unitModel');
 
 class PacmanGame {
     constructor() {
-        this.pacman = pacmanModel.pacman;
+        this.pacman = unitModel.pacman;
+        this.ghost = unitModel.ghost;
+    }
 
+    ghostMove() {
+        this.ghost.chase(this.pacman);
     }
 
     pacmanMove(direction) {
         this.pacman.move(direction);
+        this.ghostMove();
         return this.getPositions();
     };
 
     getPositions() {
-        return this.pacman.position;
+        return {
+            pacman: this.pacman.position,
+            ghost: this.ghost.position
+        };
     };
 
     startGame() {
         this.pacman.position = {
             row: 1,
             col: 1
+        };
+        this.ghost.position = {
+            row: 8,
+            col: 8
         };
         return this.getPositions();
     }
