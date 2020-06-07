@@ -44,28 +44,45 @@ class Ghost extends Unit {
     chase(unit) {
         const previous = {
           row: this.position.row,
-          col: this.position.col
+          col: this.position.col,
         };
 
-        if(Math.abs(this.position.row - unit.position.row) < Math.abs(this.position.col - unit.position.col)) {
-            if(unit.position.row > this.position.row) this.move("down");
+        if(Math.abs(this.position.row - unit.position.row) < Math.abs(this.position.col - unit.position.col))
+            this.chaseVert(unit, previous);
+        else
+            this.chaseHoriz(unit, previous);
+    }
+
+    chaseVert(unit, previous, force) {
+        if(force) {
+            if (unit.position.row > this.position.row) this.move("down");
             else this.move("up");
-
-            if(previous.row === this.position.row) {
-                if(unit.position.col > this.position.col) this.move("right");
-                else this.move("left");
-            }
         } else {
-            if(unit.position.col > this.position.col) this.move("right");
-            else this.move("left");
-
-            if(previous.col === this.position.col) {
-                if(unit.position.row > this.position.row) this.move("down");
+            if (unit.position.row === this.position.row) this.chaseHoriz(unit, previous);
+            else {
+                if (unit.position.row > this.position.row) this.move("down");
                 else this.move("up");
+
+                if (previous.col === this.position.col && previous.row === this.position.row) this.chaseHoriz(unit, previous, true)
+            }
+        }
+    }
+
+    chaseHoriz(unit, previous, force) {
+        if(force) {
+            if (unit.position.col > this.position.col) this.move("right");
+            else this.move("left");
+        } else {
+            if(unit.position.col === this.position.col) this.chaseVert(unit, previous);
+            else {
+                if (unit.position.col > this.position.col) this.move("right");
+                else this.move("left");
+
+                if (previous.col === this.position.col && previous.row === this.position.row) this.chaseVert(unit, previous, true)
             }
         }
     }
 }
 
 exports.pacman = new Pacman(1, 1);
-exports.ghost = new Ghost(8, 8);
+exports.ghost = new Ghost(6, 6);

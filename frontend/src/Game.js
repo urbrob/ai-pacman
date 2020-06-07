@@ -14,8 +14,8 @@ class Game extends React.Component {
         "col": 1
     };
     ghost = {
-        row: 8,
-        col:8
+        row: 6,
+        col: 6
     };
 
     createBoard = () => {
@@ -70,6 +70,8 @@ class Game extends React.Component {
                     + this.pacman.col + '_field').innerText = 'x';
                 document.getElementById('div-table-col_' + this.ghost.row + '_'
                     + this.ghost.col + '_field').innerText = 'G';
+
+                if(data.state === "lose") this.startGame();
             });
     };
 
@@ -92,7 +94,7 @@ class Game extends React.Component {
                 this.pacman.row = data.pacman.row;
                 this.pacman.col = data.pacman.col;
                 document.getElementById('div-table-col_1_1_field').innerText = 'x';
-                document.getElementById('div-table-col_8_8_field').innerText = 'G';
+                document.getElementById('div-table-col_6_6_field').innerText = 'G';
             });
     };
 
