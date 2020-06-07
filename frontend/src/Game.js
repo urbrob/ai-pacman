@@ -3,6 +3,8 @@ import './Game.css';
 import floor from './floor.png'
 import wall from './wall.png'
 import gameMap from './game_map'
+import pacman_transparent_img from './Pacman_transparent.png'
+import red_ghost_transparent_img from './Red_Ghost_transparent.png'
 
 class Game extends React.Component {
 
@@ -49,9 +51,9 @@ class Game extends React.Component {
         };
 
         document.getElementById('div-table-col_' + this.pacman.row + '_'
-            + this.pacman.col + '_field').innerText = '';
+            + this.pacman.col + '_field').innerHTML = '';
         document.getElementById('div-table-col_' + this.ghost.row + '_'
-            + this.ghost.col + '_field').innerText = '';
+            + this.ghost.col + '_field').innerHTML = '';
 
         fetch(this.pacmanApiUri + '/game', {
             method: 'POST',
@@ -67,9 +69,9 @@ class Game extends React.Component {
                 this.ghost.row = data.ghost.row;
                 this.ghost.col = data.ghost.col;
                 document.getElementById('div-table-col_' + this.pacman.row + '_'
-                    + this.pacman.col + '_field').innerText = 'x';
+                    + this.pacman.col + '_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="50px" height="50px"/>';
                 document.getElementById('div-table-col_' + this.ghost.row + '_'
-                    + this.ghost.col + '_field').innerText = 'G';
+                    + this.ghost.col + '_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="50px" height="50px"/>';
 
                 if(data.state === "lose") this.startGame();
             });
@@ -87,14 +89,16 @@ class Game extends React.Component {
             .then(response => response.json())
             .then(data => {
                 document.getElementById('div-table-col_' + this.pacman.row + '_'
-                    + this.pacman.col + '_field').innerText = '';
+                    + this.pacman.col + '_field').innerHTML = '';
                 document.getElementById('div-table-col_' + this.ghost.row + '_'
-                    + this.ghost.col + '_field').innerText = '';
+                    + this.ghost.col + '_field').innerHTML = '';
 
                 this.pacman.row = data.pacman.row;
                 this.pacman.col = data.pacman.col;
-                document.getElementById('div-table-col_1_1_field').innerText = 'x';
-                document.getElementById('div-table-col_6_6_field').innerText = 'G';
+                this.ghost.row = data.ghost.row;
+                this.ghost.col = data.ghost.col;
+                document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="50px" height="50px"/>';
+                document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="50px" height="50px"/>';
             });
     };
 
