@@ -3,8 +3,16 @@ import './Game.css';
 import floor from './floor.png'
 import wall from './wall.png'
 import gameMap from './game_map'
-import pacman_transparent_img from './Pacman_transparent.png'
-import red_ghost_transparent_img from './Red_Ghost_transparent.png'
+import pacman_transparent_img from './img/Pacman_transparent.png'
+import red_ghost_transparent_img from './img/Red_Ghost_transparent.png'
+
+function importAll(r) {
+    let images = {};
+    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    return images;
+}
+
+const mapImages = importAll(require.context('./img/map'));
 
 class Game extends React.Component {
 
@@ -27,7 +35,7 @@ class Game extends React.Component {
             let children = [];
             row.fields.map((field) => {
                 children.push(<div className="div-table-col" id={`div-table-col_${row.row_id}_${field.col_id}`}>
-                    {Field(field.field_type, 'div-table-col_' + row.row_id + '_' + field.col_id)}
+                    {Field(field.img, 'div-table-col_' + row.row_id + '_' + field.col_id)}
                 </div>)
             });
             board.push(<div className="div-table-row">{children}</div>)
@@ -69,9 +77,9 @@ class Game extends React.Component {
                 this.ghost.row = data.ghost.row;
                 this.ghost.col = data.ghost.col;
                 document.getElementById('div-table-col_' + this.pacman.row + '_'
-                    + this.pacman.col + '_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="50px" height="50px"/>';
+                    + this.pacman.col + '_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px"/>';
                 document.getElementById('div-table-col_' + this.ghost.row + '_'
-                    + this.ghost.col + '_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="50px" height="50px"/>';
+                    + this.ghost.col + '_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px"/>';
 
                 if(data.state === "lose") this.startGame();
             });
@@ -97,8 +105,8 @@ class Game extends React.Component {
                 this.pacman.col = data.pacman.col;
                 this.ghost.row = data.ghost.row;
                 this.ghost.col = data.ghost.col;
-                document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="50px" height="50px"/>';
-                document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="50px" height="50px"/>';
+                document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px"/>';
+                document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px"/>';
             });
     };
 
@@ -113,9 +121,10 @@ class Game extends React.Component {
 }
 
 function Field(value, id) {
-    let parsedValue = value === "wall" ? wall : floor; //TODO refactor this
+    //let parsedValue = value === "wall" ? wall : floor; //TODO refactor this
+    let img = mapImages[value];
     return(
-        <div className="Field" style={{ backgroundImage:`url(${parsedValue}`}} id={id + "_field"}/>
+        <div className="Field" style={{ backgroundImage:`url(${img}`}} id={id + "_field"}/>
     )
 }
 
