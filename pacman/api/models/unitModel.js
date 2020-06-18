@@ -39,7 +39,9 @@ class Unit {
 
 class Pacman extends Unit {}
 
-class Ghost extends Unit {
+class Ghost extends Unit {}
+
+class GhostRed extends Ghost {
 
     chase(unit) {
         const previous = {
@@ -85,4 +87,4 @@ class Ghost extends Unit {
 }
 
 exports.pacman = new Pacman(1, 1);
-exports.ghost = new Ghost(6, 6);
+exports.ghostRed = new GhostRed(6, 6);

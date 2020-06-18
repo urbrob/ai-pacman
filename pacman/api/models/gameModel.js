@@ -5,12 +5,12 @@ var unitModel = require('./unitModel');
 class PacmanGame {
     constructor() {
         this.pacman = unitModel.pacman;
-        this.ghost = unitModel.ghost;
+        this.ghostRed = unitModel.ghostRed;
         this.state = "ongoing";
     }
 
     ghostMove() {
-        this.ghost.chase(this.pacman);
+        this.ghostRed.chase(this.pacman);
     }
 
     pacmanMove(direction) {
@@ -23,7 +23,7 @@ class PacmanGame {
     getPositions() {
         return {
             pacman: this.pacman.position,
-            ghost: this.ghost.position,
+            ghost_red: this.ghostRed.position,
             state: this.state
         };
     };
@@ -33,7 +33,7 @@ class PacmanGame {
             row: 1,
             col: 1
         };
-        this.ghost.position = {
+        this.ghostRed.position = {
             row: 6,
             col: 6
         };
@@ -42,8 +42,8 @@ class PacmanGame {
     }
 
     updateState() {
-        if(this.pacman.position.row === this.ghost.position.row
-            && this.pacman.position.col === this.ghost.position.col)
+        if(this.pacman.position.row === this.ghostRed.position.row
+            && this.pacman.position.col === this.ghostRed.position.col)
             this.state = "lose";
     }
 }

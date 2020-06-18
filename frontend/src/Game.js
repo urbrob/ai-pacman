@@ -23,7 +23,7 @@ class Game extends React.Component {
         "row": 1,
         "col": 1
     };
-    ghost = {
+    ghost_red = {
         row: 6,
         col: 6
     };
@@ -60,8 +60,8 @@ class Game extends React.Component {
 
         document.getElementById('div-table-col_' + this.pacman.row + '_'
             + this.pacman.col + '_field').innerHTML = '';
-        document.getElementById('div-table-col_' + this.ghost.row + '_'
-            + this.ghost.col + '_field').innerHTML = '';
+        document.getElementById('div-table-col_' + this.ghost_red.row + '_'
+            + this.ghost_red.col + '_field').innerHTML = '';
 
         fetch(this.pacmanApiUri + '/game', {
             method: 'POST',
@@ -74,12 +74,12 @@ class Game extends React.Component {
             .then(data => {
                 this.pacman.row = data.pacman.row;
                 this.pacman.col = data.pacman.col;
-                this.ghost.row = data.ghost.row;
-                this.ghost.col = data.ghost.col;
+                this.ghost_red.row = data.ghost_red.row;
+                this.ghost_red.col = data.ghost_red.col;
                 document.getElementById('div-table-col_' + this.pacman.row + '_'
-                    + this.pacman.col + '_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px"/>';
-                document.getElementById('div-table-col_' + this.ghost.row + '_'
-                    + this.ghost.col + '_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px"/>';
+                    + this.pacman.col + '_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
+                document.getElementById('div-table-col_' + this.ghost_red.row + '_'
+                    + this.ghost_red.col + '_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
 
                 if(data.state === "lose") this.startGame();
             });
@@ -98,15 +98,15 @@ class Game extends React.Component {
             .then(data => {
                 document.getElementById('div-table-col_' + this.pacman.row + '_'
                     + this.pacman.col + '_field').innerHTML = '';
-                document.getElementById('div-table-col_' + this.ghost.row + '_'
-                    + this.ghost.col + '_field').innerHTML = '';
+                document.getElementById('div-table-col_' + this.ghost_red.row + '_'
+                    + this.ghost_red.col + '_field').innerHTML = '';
 
                 this.pacman.row = data.pacman.row;
                 this.pacman.col = data.pacman.col;
-                this.ghost.row = data.ghost.row;
-                this.ghost.col = data.ghost.col;
-                document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px"/>';
-                document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px"/>';
+                this.ghost_red.row = data.ghost_red.row;
+                this.ghost_red.col = data.ghost_red.col;
+                document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
+                document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
             });
     };
 
