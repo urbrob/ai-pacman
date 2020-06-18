@@ -27,6 +27,8 @@ class Game extends React.Component {
         row: 6,
         col: 6
     };
+    lastPressedButton = "";
+    gameInterval = null;
 
     createBoard = () => {
         let board = [];
@@ -47,10 +49,11 @@ class Game extends React.Component {
     handleKeyPressed = (event) => {
         if(event.key === "Enter") {
             this.startGame();
-        } else if(event.key === "ArrowRight") this.move("right");
-        else if(event.key === "ArrowLeft") this.move("left");
-        else if(event.key === "ArrowUp") this.move("up");
-        else if(event.key === "ArrowDown") this.move("down");
+        } else this.lastPressedButton = event.key;
+        // } else if(event.key === "ArrowRight") this.move("right");
+        // else if(event.key === "ArrowLeft") this.move("left");
+        // else if(event.key === "ArrowUp") this.move("up");
+        // else if(event.key === "ArrowDown") this.move("down");
     };
 
     move = (direct) => {
@@ -86,6 +89,7 @@ class Game extends React.Component {
     };
 
     startGame = () => {
+        if(this.gameInterval) clearInterval(this.gameInterval);
 
         fetch(this.pacmanApiUri + '/start', {
             method: 'POST',
@@ -108,6 +112,18 @@ class Game extends React.Component {
                 document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
             });
+
+        this.gameInterval = setInterval(this.gameLife, 300);
+    };
+
+    gameLife = () => {
+        if(this.lastPressedButton === "ArrowRight") this.move("right");
+        else if(this.lastPressedButton === "ArrowLeft") this.move("left");
+        else if(this.lastPressedButton === "ArrowUp") this.move("up");
+        else if(this.lastPressedButton === "ArrowDown") this.move("down");
+        else this.move("no_move");
+
+        this.lastPressedButton = ""
     };
 
     render() {

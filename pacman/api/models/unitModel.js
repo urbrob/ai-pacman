@@ -21,9 +21,11 @@ class Unit {
         else if(direction === "up") this.position.row -= 1;
         else if(direction === "down") this.position.row += 1;
 
-        if(!this.validateMove(this.position)) {
-            this.position.row = previous.row;
-            this.position.col = previous.col
+        if(direction !== "no_move") {
+            if (!this.validateMove(this.position)) {
+                this.position.row = previous.row;
+                this.position.col = previous.col
+            }
         }
 
         return this.position
