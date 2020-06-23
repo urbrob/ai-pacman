@@ -22,3 +22,9 @@
     display: table-column;
     background-color: #cc1215;
 }
+.Game {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

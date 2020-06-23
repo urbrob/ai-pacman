@@ -10,8 +10,126 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  margin: 0;
+  background-image: url("pacman-background.jpg");
 }
 
 .App-link {
   color: #61dafb;
+}
+#logo
+{
+  height: 100%;
+  margin: auto;
+  float: middle;
+  display: block;
+}
+
+#console{
+  margin: auto;
+  width: 80%;
+  height: 97vh;
+  padding: 10px;
+}
+
+#rectangle{
+  width:95%;
+  height:10%;
+  background:#DB712E;
+  margin: auto;
+}
+
+#firsttrapez{
+  margin: auto;
+  border-bottom: 52px solid #D98219;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  height: 0;
+  width: 83%;
+  transform: rotate(180deg);
+}
+
+#rectangleframe{
+  margin:auto;
+  width:95%;
+  height:92%;
+  background:#EB9F17;
+}
+
+#toptrapez{
+  margin: auto;
+  border-bottom: 50px solid #D98219;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  height: 0;
+  transform: rotate(180deg);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#bottomtrapez{
+  margin: auto;
+  border-bottom: 50px solid #D98219;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  height: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#display{
+  width: calc(100% - 100px);
+  height: calc(100% - 100px);
+  background:black;
+  margin: auto;
+}
+
+#rectanglecenter{
+  width:80%;
+  height: calc(85% - 100px);
+  background:#DB712E;
+  margin: auto;
+}
+
+#lasttrapez{
+  margin: auto;
+  border-bottom: 95px solid #FBAD17;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  height: 0;
+  box-sizing: border-box;
+  width: 92%;
+}
+
+#joypad1{
+  position:absolute;
+  top:30%;
+  left:5%;
+  margin-top:-50px;
+  margin-left:-25px;
+}
+
+#joypad2{
+  position:absolute;
+  top:30%;
+  left:65%;
+  margin-top:-50px;
+  margin-left:-25px;
+}
+
+
+#panel1{
+  position:absolute;
+  top:40%;
+  left:15%;
+  margin-top:-17px;
+  margin-left:-25px;
+}
+
+#panel2{
+  position:absolute;
+  top:40%;
+  left:75%;
+  margin-top:-17px;
+  margin-left:-25px;
 }
