@@ -41,7 +41,26 @@ class Unit {
 
 class Pacman extends Unit {}
 
-class Ghost extends Unit {}
+class Ghost extends Unit {
+    constructor(r, c, others) {
+        super(r, c);
+        this.otherGhostsPositions = others
+    }
+
+    updateOtherGhostsPositions(othersPositions) {
+        this.otherGhostsPositions = othersPositions
+    }
+
+    validateMove(position) {
+        let collision = false;
+        this.otherGhostsPositions.forEach( (other) => {
+           if(this.position.row === other.row && this.position.col === other.col) {
+               collision = true;
+           }
+        });
+        return !collision && super.validateMove(position);
+    }
+}
 
 class GhostRed extends Ghost {
 
@@ -87,6 +106,10 @@ class GhostRed extends Ghost {
         }
     }
 }
+class GhostCyan extends GhostRed {
+
+}
 
 exports.pacman = new Pacman(1, 1);
-exports.ghostRed = new GhostRed(6, 6);
+exports.ghostRed = new GhostRed(6, 6, [ {row: 12, col: 12} ]);
+exports.ghostCyan = new GhostCyan(12, 12, [ {row: 6, col:6} ]);
