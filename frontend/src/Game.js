@@ -61,10 +61,10 @@ class Game extends React.Component {
             direction: direct
         };
 
-        document.getElementById('div-table-col_' + this.pacman.row + '_'
-            + this.pacman.col + '_field').innerHTML = '';
-        document.getElementById('div-table-col_' + this.ghost_red.row + '_'
-            + this.ghost_red.col + '_field').innerHTML = '';
+        if(direct !== "no_move") {
+            document.getElementById('div-table-col_' + this.pacman.row + '_'
+                + this.pacman.col + '_field').innerHTML = '';
+        }
 
         fetch(this.pacmanApiUri + '/game', {
             method: 'POST',
@@ -77,6 +77,10 @@ class Game extends React.Component {
             .then(data => {
                 this.pacman.row = data.pacman.row;
                 this.pacman.col = data.pacman.col;
+                if(data.ghost_red.row !== this.ghost_red.row || data.ghost_red.col !== this.ghost_red.col) {
+                    document.getElementById('div-table-col_' + this.ghost_red.row + '_'
+                        + this.ghost_red.col + '_field').innerHTML = '';
+                }
                 this.ghost_red.row = data.ghost_red.row;
                 this.ghost_red.col = data.ghost_red.col;
                 document.getElementById('div-table-col_' + this.pacman.row + '_'
