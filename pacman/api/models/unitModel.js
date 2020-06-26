@@ -76,15 +76,23 @@ class GhostRed extends Ghost {
             this.chaseHoriz(unit, previous);
     }
 
+    chaseMoveVert(unit) {
+        if (unit.position.row > this.position.row) this.move("down");
+        else this.move("up");
+    }
+
+    chaseMoveHoriz(unit) {
+        if (unit.position.col > this.position.col) this.move("right");
+        else this.move("left");
+    }
+
     chaseVert(unit, previous, force) {
         if(force) {
-            if (unit.position.row > this.position.row) this.move("down");
-            else this.move("up");
+            this.chaseMoveVert(unit)
         } else {
             if (unit.position.row === this.position.row) this.chaseHoriz(unit, previous);
             else {
-                if (unit.position.row > this.position.row) this.move("down");
-                else this.move("up");
+                this.chaseMoveVert(unit);
 
                 if (previous.col === this.position.col && previous.row === this.position.row) this.chaseHoriz(unit, previous, true)
             }
@@ -93,13 +101,11 @@ class GhostRed extends Ghost {
 
     chaseHoriz(unit, previous, force) {
         if(force) {
-            if (unit.position.col > this.position.col) this.move("right");
-            else this.move("left");
+            this.chaseMoveHoriz(unit)
         } else {
             if(unit.position.col === this.position.col) this.chaseVert(unit, previous);
             else {
-                if (unit.position.col > this.position.col) this.move("right");
-                else this.move("left");
+                this.chaseMoveHoriz(unit);
 
                 if (previous.col === this.position.col && previous.row === this.position.row) this.chaseVert(unit, previous, true)
             }
@@ -107,7 +113,17 @@ class GhostRed extends Ghost {
     }
 }
 class GhostCyan extends GhostRed {
+    chase(unit) {
+        const previous = {
+            row: this.position.row,
+            col: this.position.col,
+        };
 
+        if(Math.abs(this.position.row - unit.position.row) < Math.abs(this.position.col - unit.position.col))
+            this.chaseHoriz(unit, previous);
+        else
+            this.chaseVert(unit, previous)
+    }
 }
 
 exports.pacman = new Pacman(1, 1);
