@@ -126,7 +126,7 @@ class GhostCyan extends GhostRed {
             this.chaseVert(unit, previous)
     }
 }
-class PinkGhost extends Ghost {
+class GhostPink extends Ghost {
 
     constructor(r, c, others) {
         super(r, c, others);
@@ -142,11 +142,11 @@ class PinkGhost extends Ghost {
         let direction = this.chooseRandomDirection();
 
         this.move(direction);
-        if(this.position.col === previous.col && this.position.row === previous.row) this.chase(unit);
-        else {
+        // if(this.position.col === previous.col && this.position.row === previous.row) this.chase(unit);
+        // else {
             this.prevPositions.push(this.position);
             if(this.prevPositions.length > 10) this.prevPositions = this.prevPositions.slice(1, 11);
-        }
+        // }
     }
 
     chooseRandomDirection() {
@@ -173,5 +173,6 @@ class PinkGhost extends Ghost {
     }
 }
 exports.pacman = new Pacman(1, 1);
-exports.ghostRed = new GhostRed(6, 6, [ {row: 12, col: 12} ]);
-exports.ghostCyan = new GhostCyan(12, 12, [ {row: 6, col:6} ]);
+exports.ghostRed = new GhostRed(6, 6, [ {row: 12, col: 12}, {row: 6, col: 12} ]);
+exports.ghostCyan = new GhostCyan(12, 12, [ {row: 6, col:6}, {row: 6, col: 12} ]);
+exports.ghostPink = new GhostPink(6, 12, [ {row: 12, col: 12}, {row: 6, col:6} ]);

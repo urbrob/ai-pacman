@@ -6,6 +6,7 @@ import gameMap from './game_map'
 import pacman_transparent_img from './img/Pacman_transparent.png'
 import red_ghost_transparent_img from './img/Red_Ghost_transparent.png'
 import cyan_ghost_transparent_img from './img/Cyan_Ghost_transparent.png'
+import pink_ghost_transparent_img from './img/Pink_Ghost_transparent.png'
 
 function importAll(r) {
     let images = {};
@@ -30,6 +31,10 @@ class Game extends React.Component {
     };
     ghost_cyan = {
         row: 12,
+        col: 12
+    };
+    ghost_pink = {
+        row: 6,
         col: 12
     };
     lastPressedButton = "";
@@ -96,12 +101,21 @@ class Game extends React.Component {
                 this.ghost_cyan.row = data.ghost_cyan.row;
                 this.ghost_cyan.col = data.ghost_cyan.col;
 
+                if(data.ghost_pink.row !== this.ghost_pink.row || data.ghost_pink.col !== this.ghost_pink.col) {
+                    document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
+                        + this.ghost_pink.col + '_field').innerHTML = '';
+                }
+                this.ghost_pink.row = data.ghost_pink.row;
+                this.ghost_pink.col = data.ghost_pink.col;
+
                 document.getElementById('div-table-col_' + this.pacman.row + '_'
                     + this.pacman.col + '_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_' + this.ghost_red.row + '_'
                     + this.ghost_red.col + '_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_' + this.ghost_cyan.row + '_'
                     + this.ghost_cyan.col + '_field').innerHTML = '<img src="' + cyan_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
+                document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
+                    + this.ghost_pink.col + '_field').innerHTML = '<img src="' + pink_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
 
                 if(data.state === "lose") this.startGame();
             });
@@ -125,6 +139,8 @@ class Game extends React.Component {
                     + this.ghost_red.col + '_field').innerHTML = '';
                 document.getElementById('div-table-col_' + this.ghost_cyan.row + '_'
                     + this.ghost_cyan.col + '_field').innerHTML = '';
+                document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
+                    + this.ghost_pink.col + '_field').innerHTML = '';
 
                 this.pacman.row = data.pacman.row;
                 this.pacman.col = data.pacman.col;
@@ -132,9 +148,12 @@ class Game extends React.Component {
                 this.ghost_red.col = data.ghost_red.col;
                 this.ghost_cyan.row = data.ghost_cyan.row;
                 this.ghost_cyan.col = data.ghost_cyan.col;
+                this.ghost_pink.row = data.ghost_pink.row;
+                this.ghost_pink.col = data.ghost_pink.col;
                 document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_12_12_field').innerHTML = '<img src="' + cyan_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
+                document.getElementById('div-table-col_6_12_field').innerHTML = '<img src="' + pink_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
             });
 
         this.gameInterval = setInterval(this.gameLife, 300);
