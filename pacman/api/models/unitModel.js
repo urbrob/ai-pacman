@@ -113,6 +113,7 @@ class GhostRed extends Ghost {
     }
 }
 class GhostCyan extends GhostRed {
+
     chase(unit) {
         const previous = {
             row: this.position.row,
@@ -125,7 +126,52 @@ class GhostCyan extends GhostRed {
             this.chaseVert(unit, previous)
     }
 }
+class PinkGhost extends Ghost {
 
+    constructor(r, c, others) {
+        super(r, c, others);
+        this.prevPositions = [] //max 10
+    }
+
+    chase(unit) {
+        const previous = {
+            row: this.position.row,
+            col: this.position.col,
+        };
+
+        let direction = this.chooseRandomDirection();
+
+        this.move(direction);
+        if(this.position.col === previous.col && this.position.row === previous.row) this.chase(unit);
+        else {
+            this.prevPositions.push(this.position);
+            if(this.prevPositions.length > 10) this.prevPositions = this.prevPositions.slice(1, 11);
+        }
+    }
+
+    chooseRandomDirection() {
+        let randInt = Math.floor(Math.random() * 4); // 0 - 0.24; 0.25 - 0.49; 0.5 - 0.74; 0.75 - 0.99
+        let randDir;
+
+        if(randInt === 0) randDir = "up";
+        else if(randInt === 1) randDir = "down";
+        else if(randInt === 2) randDir = "left";
+        else randDir = "right";
+
+        return randDir;
+    }
+    //TODO obsluga corner case zwiazanego z blokowaniem sie duchow
+    //TODO zmiana chooseRandDir aby przyjmowal tablice
+    //TODO wywolanie ruchu ducha i poprawa updateow pozycji duchow
+    //TODO frontend pink ducha 
+    validateMove(position) {
+        let moveBack = false;
+        this.prevPositions.forEach( (pos) => {
+           if(pos.row === this.position.row && pos.col === this.position.col) moveBack = true;
+        });
+        return !moveBack && super.validateMove(position);
+    }
+}
 exports.pacman = new Pacman(1, 1);
 exports.ghostRed = new GhostRed(6, 6, [ {row: 12, col: 12} ]);
 exports.ghostCyan = new GhostCyan(12, 12, [ {row: 6, col:6} ]);
