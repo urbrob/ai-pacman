@@ -7,6 +7,7 @@ import pacman_transparent_img from './img/Pacman_transparent.png'
 import red_ghost_transparent_img from './img/Red_Ghost_transparent.png'
 import cyan_ghost_transparent_img from './img/Cyan_Ghost_transparent.png'
 import pink_ghost_transparent_img from './img/Pink_Ghost_transparent.png'
+import orange_ghost_transparent_img from './img/Orange_Ghost_transparent.png'
 
 function importAll(r) {
     let images = {};
@@ -36,6 +37,10 @@ class Game extends React.Component {
     ghost_pink = {
         row: 6,
         col: 12
+    };
+    ghost_orange = {
+        row: 12,
+        col: 6
     };
     lastPressedButton = "";
     gameInterval = null;
@@ -108,6 +113,13 @@ class Game extends React.Component {
                 this.ghost_pink.row = data.ghost_pink.row;
                 this.ghost_pink.col = data.ghost_pink.col;
 
+                if(data.ghost_orange.row !== this.ghost_orange.row || data.ghost_orange.col !== this.ghost_orange.col) {
+                    document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
+                        + this.ghost_orange.col + '_field').innerHTML = '';
+                }
+                this.ghost_orange.row = data.ghost_orange.row;
+                this.ghost_orange.col = data.ghost_orange.col;
+
                 document.getElementById('div-table-col_' + this.pacman.row + '_'
                     + this.pacman.col + '_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_' + this.ghost_red.row + '_'
@@ -116,6 +128,8 @@ class Game extends React.Component {
                     + this.ghost_cyan.col + '_field').innerHTML = '<img src="' + cyan_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
                     + this.ghost_pink.col + '_field').innerHTML = '<img src="' + pink_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
+                document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
+                    + this.ghost_orange.col + '_field').innerHTML = '<img src="' + orange_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
 
                 if(data.state === "lose") this.startGame();
             });
@@ -141,6 +155,8 @@ class Game extends React.Component {
                     + this.ghost_cyan.col + '_field').innerHTML = '';
                 document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
                     + this.ghost_pink.col + '_field').innerHTML = '';
+                document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
+                    + this.ghost_orange.col + '_field').innerHTML = '';
 
                 this.pacman.row = data.pacman.row;
                 this.pacman.col = data.pacman.col;
@@ -150,10 +166,13 @@ class Game extends React.Component {
                 this.ghost_cyan.col = data.ghost_cyan.col;
                 this.ghost_pink.row = data.ghost_pink.row;
                 this.ghost_pink.col = data.ghost_pink.col;
+                this.ghost_orange.row = data.ghost_orange.row;
+                this.ghost_orange.col = data.ghost_orange.col;
                 document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_12_12_field').innerHTML = '<img src="' + cyan_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
                 document.getElementById('div-table-col_6_12_field').innerHTML = '<img src="' + pink_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
+                document.getElementById('div-table-col_12_6_field').innerHTML = '<img src="' + orange_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
             });
 
         this.gameInterval = setInterval(this.gameLife, 300);

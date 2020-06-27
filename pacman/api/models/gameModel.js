@@ -8,6 +8,7 @@ class PacmanGame {
         this.ghostRed = unitModel.ghostRed;
         this.ghostCyan = unitModel.ghostCyan;
         this.ghostPink = unitModel.ghostPink;
+        this.ghostOrange = unitModel.ghostOrange;
         this.state = "ongoing";
     }
 
@@ -17,36 +18,93 @@ class PacmanGame {
             {row: this.ghostRed.position.row,
              col: this.ghostRed.position.col},
             {row: this.ghostPink.position.row,
-             col: this.ghostPink.position.col}]);
+             col: this.ghostPink.position.col},
+            {row: this.ghostOrange.position.row,
+             col: this.ghostOrange.position.col}]);
         this.ghostPink.updateOtherGhostsPositions([
             {row: this.ghostRed.position.row,
              col: this.ghostRed.position.col},
             {row: this.ghostCyan.position.row,
-             col: this.ghostCyan.position.col}]);
+             col: this.ghostCyan.position.col},
+            {row: this.ghostOrange.position.row,
+             col: this.ghostOrange.position.col}]);
+        this.ghostOrange.updateOtherGhostsPositions([
+            {row: this.ghostRed.position.row,
+                col: this.ghostRed.position.col},
+            {row: this.ghostPink.position.row,
+                col: this.ghostPink.position.col},
+            {row: this.ghostCyan.position.row,
+                col: this.ghostCyan.position.col} ]);
+
 
         this.ghostCyan.chase(this.pacman);
         this.ghostRed.updateOtherGhostsPositions([
             {row: this.ghostCyan.position.row,
              col: this.ghostCyan.position.col},
             {row: this.ghostPink.position.row,
-             col: this.ghostPink.position.col} ]);
+             col: this.ghostPink.position.col},
+            {row: this.ghostOrange.position.row,
+             col: this.ghostOrange.position.col}]);
         this.ghostPink.updateOtherGhostsPositions([
             {row: this.ghostRed.position.row,
              col: this.ghostRed.position.col},
             {row: this.ghostCyan.position.row,
-             col: this.ghostCyan.position.col} ]);
+             col: this.ghostCyan.position.col},
+            {row: this.ghostOrange.position.row,
+             col: this.ghostOrange.position.col}]);
+        this.ghostOrange.updateOtherGhostsPositions([
+            {row: this.ghostRed.position.row,
+                col: this.ghostRed.position.col},
+            {row: this.ghostPink.position.row,
+                col: this.ghostPink.position.col},
+            {row: this.ghostCyan.position.row,
+                col: this.ghostCyan.position.col} ]);
 
         this.ghostPink.chase(this.pacman);
         this.ghostRed.updateOtherGhostsPositions([
             {row: this.ghostCyan.position.row,
              col: this.ghostCyan.position.col},
             {row: this.ghostPink.position.row,
-             col: this.ghostPink.position.col} ]);
+             col: this.ghostPink.position.col},
+            {row: this.ghostOrange.position.row,
+             col: this.ghostOrange.position.col} ]);
         this.ghostCyan.updateOtherGhostsPositions([
             {row: this.ghostRed.position.row,
              col: this.ghostRed.position.col},
             {row: this.ghostPink.position.row,
-             col: this.ghostPink.position.col} ]);
+             col: this.ghostPink.position.col},
+            {row: this.ghostOrange.position.row,
+             col: this.ghostOrange.position.col} ]);
+        this.ghostOrange.updateOtherGhostsPositions([
+            {row: this.ghostRed.position.row,
+                col: this.ghostRed.position.col},
+            {row: this.ghostPink.position.row,
+                col: this.ghostPink.position.col},
+            {row: this.ghostCyan.position.row,
+                col: this.ghostCyan.position.col} ]);
+
+        this.ghostOrange.chase(this.pacman);
+        this.ghostRed.updateOtherGhostsPositions([
+            {row: this.ghostCyan.position.row,
+             col: this.ghostCyan.position.col},
+            {row: this.ghostPink.position.row,
+             col: this.ghostPink.position.col},
+            {row: this.ghostOrange.position.row,
+             col: this.ghostOrange.position.col} ]);
+        this.ghostCyan.updateOtherGhostsPositions([
+            {row: this.ghostRed.position.row,
+             col: this.ghostRed.position.col},
+            {row: this.ghostPink.position.row,
+             col: this.ghostPink.position.col},
+            {row: this.ghostOrange.position.row,
+             col: this.ghostOrange.position.col} ]);
+        this.ghostPink.updateOtherGhostsPositions([
+            {row: this.ghostRed.position.row,
+                col: this.ghostRed.position.col},
+            {row: this.ghostOrange.position.row,
+                col: this.ghostOrange.position.col},
+            {row: this.ghostCyan.position.row,
+                col: this.ghostCyan.position.col} ]);
     }
 
     pacmanMove(direction) {
@@ -62,6 +120,7 @@ class PacmanGame {
             ghost_red: this.ghostRed.position,
             ghost_cyan: this.ghostCyan.position,
             ghost_pink: this.ghostPink.position,
+            ghost_orange: this.ghostOrange.position,
             state: this.state
         };
     };
@@ -83,6 +142,10 @@ class PacmanGame {
             row: 6,
             col: 12
         };
+        this.ghostOrange.position = {
+            row: 12,
+            col: 6
+        };
         this.state = "ongoing";
         return this.getPositions();
     }
@@ -93,7 +156,9 @@ class PacmanGame {
             (this.pacman.position.row === this.ghostCyan.position.row
                 && this.pacman.position.col === this.ghostCyan.position.col) ||
             (this.pacman.position.row === this.ghostPink.position.row
-                && this.pacman.position.col === this.ghostPink.position.col))
+                && this.pacman.position.col === this.ghostPink.position.col) ||
+            (this.pacman.position.row === this.ghostOrange.position.row
+                && this.pacman.position.col === this.ghostOrange.position.col))
             this.state = "lose";
     }
 }

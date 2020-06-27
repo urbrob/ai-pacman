@@ -130,7 +130,6 @@ class GhostPink extends Ghost {
 
     constructor(r, c, others) {
         super(r, c, others);
-        this.prevPositions = [] //max 10
     }
 
     chase(unit) {
@@ -140,22 +139,16 @@ class GhostPink extends Ghost {
         };
 
         let direction = this.chooseRandomDirection();
-
         this.move(direction);
-        // if(this.position.col === previous.col && this.position.row === previous.row) this.chase(unit);
-        // else {
-            this.prevPositions.push(this.position);
-            if(this.prevPositions.length > 10) this.prevPositions = this.prevPositions.slice(1, 11);
-        // }
     }
 
     chooseRandomDirection() {
-        let randInt = Math.floor(Math.random() * 4); // 0 - 0.24; 0.25 - 0.49; 0.5 - 0.74; 0.75 - 0.99
+        let randInt = Math.random(); // 0 - 0.24; 0.25 - 0.49; 0.5 - 0.74; 0.75 - 0.99
         let randDir;
 
-        if(randInt === 0) randDir = "up";
-        else if(randInt === 1) randDir = "down";
-        else if(randInt === 2) randDir = "left";
+        if(randInt < 0.25) randDir = "up";
+        else if(randInt < 0.5) randDir = "down";
+        else if(randInt < 0.75) randDir = "left";
         else randDir = "right";
 
         return randDir;
@@ -164,15 +157,10 @@ class GhostPink extends Ghost {
     //TODO zmiana chooseRandDir aby przyjmowal tablice
     //TODO wywolanie ruchu ducha i poprawa updateow pozycji duchow
     //TODO frontend pink ducha 
-    validateMove(position) {
-        let moveBack = false;
-        this.prevPositions.forEach( (pos) => {
-           if(pos.row === this.position.row && pos.col === this.position.col) moveBack = true;
-        });
-        return !moveBack && super.validateMove(position);
-    }
 }
+class GhostOrange extends GhostPink {}
 exports.pacman = new Pacman(1, 1);
-exports.ghostRed = new GhostRed(6, 6, [ {row: 12, col: 12}, {row: 6, col: 12} ]);
-exports.ghostCyan = new GhostCyan(12, 12, [ {row: 6, col:6}, {row: 6, col: 12} ]);
-exports.ghostPink = new GhostPink(6, 12, [ {row: 12, col: 12}, {row: 6, col:6} ]);
+exports.ghostRed = new GhostRed(6, 6, [ {row: 12, col: 12}, {row: 6, col: 12}, {row: 12, col: 6} ]);
+exports.ghostCyan = new GhostCyan(12, 12, [ {row: 6, col:6}, {row: 6, col: 12}, {row: 12, col: 6} ]);
+exports.ghostPink = new GhostPink(6, 12, [ {row: 12, col: 12}, {row: 6, col:6}, {row: 12, col: 6} ]);
+exports.ghostOrange = new GhostOrange(12, 6, [ {row: 12, col: 12}, {row: 6, col:6}, {row: 6, col: 12} ]);
