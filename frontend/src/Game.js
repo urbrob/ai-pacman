@@ -156,6 +156,21 @@ class Game extends React.Component {
         this.gameInterval = setInterval(this.gameLife, 300);
     };
 
+
+    gameLife = () => {
+        if(this.gameType === "player") {
+            if (this.lastPressedButton === "ArrowRight") this.move("right");
+            else if (this.lastPressedButton === "ArrowLeft") this.move("left");
+            else if (this.lastPressedButton === "ArrowUp") this.move("up");
+            else if (this.lastPressedButton === "ArrowDown") this.move("down");
+            else this.move("no_move");
+
+            this.lastPressedButton = ""
+        } else {
+            //TODO implementacja tylko getujaca ruchy bo to ai
+        }
+    };
+
     clearUnitPosition = (unit) => {
         document.getElementById('div-table-col_' + unit.row + '_'
             + unit.col + '_field').innerHTML = '';
@@ -194,23 +209,9 @@ class Game extends React.Component {
         this.updateUnitPositions(this.ghost_pink, data.ghost_pink);
         this.updateUnitPositions(this.ghost_orange, data.ghost_orange);
     };
-
+    
     checkUnitPositionChanged = (unit, receivedData) => {
         return receivedData.row !== unit.row || receivedData.col !== unit.col
-    };
-
-    gameLife = () => {
-        if(this.gameType === "player") {
-            if (this.lastPressedButton === "ArrowRight") this.move("right");
-            else if (this.lastPressedButton === "ArrowLeft") this.move("left");
-            else if (this.lastPressedButton === "ArrowUp") this.move("up");
-            else if (this.lastPressedButton === "ArrowDown") this.move("down");
-            else this.move("no_move");
-
-            this.lastPressedButton = ""
-        } else {
-            //TODO implementacja tylko getujaca ruchy bo to ai
-        }
     };
 
     render() {
