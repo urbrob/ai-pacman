@@ -98,9 +98,6 @@ class Game extends React.Component {
     };
 
     move = (direct) => {
-        const dataToPost = {
-            direction: direct
-        };
 
         if(direct !== "no_move") {
             this.clearUnitPosition(this.pacman);
@@ -111,35 +108,31 @@ class Game extends React.Component {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(dataToPost)
+            body: JSON.stringify({ direction: direct })
         })
             .then(response => response.json())
             .then(data => {
-                this.pacman.row = data.pacman.row;
-                this.pacman.col = data.pacman.col;
+                this.updateUnitPositions(this.pacman, data.pacman);
+
                 if(data.ghost_red.row !== this.ghost_red.row || data.ghost_red.col !== this.ghost_red.col) {
                     this.clearUnitPosition(this.ghost_red);
                 }
-                this.ghost_red.row = data.ghost_red.row;
-                this.ghost_red.col = data.ghost_red.col;
+                this.updateUnitPositions(this.ghost_red, data.ghost_red);
 
                 if(data.ghost_cyan.row !== this.ghost_cyan.row || data.ghost_cyan.col !== this.ghost_cyan.col) {
                     this.clearUnitPosition(this.ghost_cyan);
                 }
-                this.ghost_cyan.row = data.ghost_cyan.row;
-                this.ghost_cyan.col = data.ghost_cyan.col;
+                this.updateUnitPositions(this.ghost_cyan, data.ghost_cyan);
 
                 if(data.ghost_pink.row !== this.ghost_pink.row || data.ghost_pink.col !== this.ghost_pink.col) {
                     this.clearUnitPosition(this.ghost_pink);
                 }
-                this.ghost_pink.row = data.ghost_pink.row;
-                this.ghost_pink.col = data.ghost_pink.col;
+                this.updateUnitPositions(this.ghost_pink, data.ghost_pink);
 
                 if(data.ghost_orange.row !== this.ghost_orange.row || data.ghost_orange.col !== this.ghost_orange.col) {
                     this.clearUnitPosition(this.ghost_orange);
                 }
-                this.ghost_orange.row = data.ghost_orange.row;
-                this.ghost_orange.col = data.ghost_orange.col;
+                this.updateUnitPositions(this.ghost_orange, data.ghost_orange);
 
                 this.renderUnitPosition(this.pacman);
                 this.renderUnitPosition(this.ghost_red);
@@ -172,16 +165,11 @@ class Game extends React.Component {
                 this.clearUnitPosition(this.ghost_pink);
                 this.clearUnitPosition(this.ghost_orange);
 
-                this.pacman.row = data.pacman.row;
-                this.pacman.col = data.pacman.col;
-                this.ghost_red.row = data.ghost_red.row;
-                this.ghost_red.col = data.ghost_red.col;
-                this.ghost_cyan.row = data.ghost_cyan.row;
-                this.ghost_cyan.col = data.ghost_cyan.col;
-                this.ghost_pink.row = data.ghost_pink.row;
-                this.ghost_pink.col = data.ghost_pink.col;
-                this.ghost_orange.row = data.ghost_orange.row;
-                this.ghost_orange.col = data.ghost_orange.col;
+                this.updateUnitPositions(this.pacman, data.pacman);
+                this.updateUnitPositions(this.ghost_red, data.ghost_red);
+                this.updateUnitPositions(this.ghost_cyan, data.ghost_cyan);
+                this.updateUnitPositions(this.ghost_pink, data.ghost_pink);
+                this.updateUnitPositions(this.ghost_orange, data.ghost_orange);
 
                 this.renderUnitPosition(this.pacman);
                 this.renderUnitPosition(this.ghost_red);
@@ -201,6 +189,11 @@ class Game extends React.Component {
     renderUnitPosition = (unit) => {
         document.getElementById('div-table-col_' + unit.row + '_'
             + unit.col + '_field').innerHTML = '<img src="' + unit.img + '" width="25px" height="25px" align="top"/>';
+    };
+
+    updateUnitPositions = (unit, receivedData) => {
+      unit.row = receivedData.row;
+      unit.col = receivedData.col;
     };
 
     gameLife = () => {
