@@ -209,7 +209,7 @@ class Game extends React.Component {
         this.updateUnitPositions(this.ghost_pink, data.ghost_pink);
         this.updateUnitPositions(this.ghost_orange, data.ghost_orange);
     };
-    
+
     checkUnitPositionChanged = (unit, receivedData) => {
         return receivedData.row !== unit.row || receivedData.col !== unit.col
     };
