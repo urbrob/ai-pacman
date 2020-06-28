@@ -50,23 +50,25 @@ class Game extends React.Component {
       return <div id="div-menu">
           <div className="div-menu-button">
             <button className="button" onClick={() => {
-                    document.getElementById("div-menu").style.display = "none";
-                    document.getElementById("div-table").style.display = "table";
-                    document.getElementById("Game-div").focus();
-                    this.gameType = "player";
-                    this.startGame();
+                    this.hideMenuAndStartGame("player")
             }}>PLAYER VS GHOSTS</button>
           </div>
           <div className="div-menu-button">
               <button className="button" onClick={ () => {
-                  document.getElementById("div-menu").style.display = "none";
-                  document.getElementById("div-table").style.display = "table";
-                  this.gameType = "ai";
-                  this.startGame();
+                  this.hideMenuAndStartGame("ai")
               }}>AI VS GHOSTS</button>
           </div>
       </div>
     };
+
+    hideMenuAndStartGame(type) {
+        document.getElementById("div-menu").style.display = "none";
+        document.getElementById("div-table").style.display = "table";
+        this.gameType = type;
+        if(this.gameType === "player")
+            document.getElementById("Game-div").focus();
+        this.startGame();
+    }
 
     createBoard = () => {
         let board = [];
