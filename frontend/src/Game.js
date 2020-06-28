@@ -24,23 +24,28 @@ class Game extends React.Component {
 
     pacman = {
         "row": 1,
-        "col": 1
+        "col": 1,
+        img: pacman_transparent_img
     };
     ghost_red = {
         row: 6,
-        col: 6
+        col: 6,
+        img: red_ghost_transparent_img
     };
     ghost_cyan = {
         row: 12,
-        col: 12
+        col: 12,
+        img: cyan_ghost_transparent_img
     };
     ghost_pink = {
         row: 6,
-        col: 12
+        col: 12,
+        img: pink_ghost_transparent_img
     };
     ghost_orange = {
         row: 12,
-        col: 6
+        col: 6,
+        img: orange_ghost_transparent_img
     };
     lastPressedButton = "";
     gameInterval = null;
@@ -136,16 +141,11 @@ class Game extends React.Component {
                 this.ghost_orange.row = data.ghost_orange.row;
                 this.ghost_orange.col = data.ghost_orange.col;
 
-                document.getElementById('div-table-col_' + this.pacman.row + '_'
-                    + this.pacman.col + '_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_' + this.ghost_red.row + '_'
-                    + this.ghost_red.col + '_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_' + this.ghost_cyan.row + '_'
-                    + this.ghost_cyan.col + '_field').innerHTML = '<img src="' + cyan_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
-                    + this.ghost_pink.col + '_field').innerHTML = '<img src="' + pink_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
-                    + this.ghost_orange.col + '_field').innerHTML = '<img src="' + orange_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
+                this.renderUnitPosition(this.pacman);
+                this.renderUnitPosition(this.ghost_red);
+                this.renderUnitPosition(this.ghost_cyan);
+                this.renderUnitPosition(this.ghost_pink);
+                this.renderUnitPosition(this.ghost_orange);
 
                 if(data.state === "lose") {
                     document.getElementById("div-menu").style.display = "block";
@@ -182,11 +182,12 @@ class Game extends React.Component {
                 this.ghost_pink.col = data.ghost_pink.col;
                 this.ghost_orange.row = data.ghost_orange.row;
                 this.ghost_orange.col = data.ghost_orange.col;
-                document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_12_12_field').innerHTML = '<img src="' + cyan_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_6_12_field').innerHTML = '<img src="' + pink_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_12_6_field').innerHTML = '<img src="' + orange_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
+
+                this.renderUnitPosition(this.pacman);
+                this.renderUnitPosition(this.ghost_red);
+                this.renderUnitPosition(this.ghost_cyan);
+                this.renderUnitPosition(this.ghost_pink);
+                this.renderUnitPosition(this.ghost_orange);
             });
 
         this.gameInterval = setInterval(this.gameLife, 300);
@@ -195,6 +196,11 @@ class Game extends React.Component {
     clearUnitPosition = (unit) => {
         document.getElementById('div-table-col_' + unit.row + '_'
             + unit.col + '_field').innerHTML = '';
+    };
+
+    renderUnitPosition = (unit) => {
+        document.getElementById('div-table-col_' + unit.row + '_'
+            + unit.col + '_field').innerHTML = '<img src="' + unit.img + '" width="25px" height="25px" align="top"/>';
     };
 
     gameLife = () => {
