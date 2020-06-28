@@ -44,6 +44,7 @@ class Game extends React.Component {
     };
     lastPressedButton = "";
     gameInterval = null;
+    gameType = "";
 
     createMenu = () => {
       return <div id="div-menu">
@@ -52,12 +53,17 @@ class Game extends React.Component {
                     document.getElementById("div-menu").style.display = "none";
                     document.getElementById("div-table").style.display = "table";
                     document.getElementById("Game-div").focus();
+                    this.gameType = "player";
                     this.startGame();
-                }
-            }>PLAYER VS GHOSTS</button>
+            }}>PLAYER VS GHOSTS</button>
           </div>
           <div className="div-menu-button">
-              <button className="button">AI VS GHOSTS</button>
+              <button className="button" onClick={ () => {
+                  document.getElementById("div-menu").style.display = "none";
+                  document.getElementById("div-table").style.display = "table";
+                  this.gameType = "ai";
+                  this.startGame();
+              }}>AI VS GHOSTS</button>
           </div>
       </div>
     };
@@ -82,10 +88,6 @@ class Game extends React.Component {
         if(event.key === "Enter") {
             this.startGame();
         } else this.lastPressedButton = event.key;
-        // } else if(event.key === "ArrowRight") this.move("right");
-        // else if(event.key === "ArrowLeft") this.move("left");
-        // else if(event.key === "ArrowUp") this.move("up");
-        // else if(event.key === "ArrowDown") this.move("down");
     };
 
     move = (direct) => {
@@ -199,13 +201,17 @@ class Game extends React.Component {
     };
 
     gameLife = () => {
-        if(this.lastPressedButton === "ArrowRight") this.move("right");
-        else if(this.lastPressedButton === "ArrowLeft") this.move("left");
-        else if(this.lastPressedButton === "ArrowUp") this.move("up");
-        else if(this.lastPressedButton === "ArrowDown") this.move("down");
-        else this.move("no_move");
+        if(this.gameType === "player") {
+            if (this.lastPressedButton === "ArrowRight") this.move("right");
+            else if (this.lastPressedButton === "ArrowLeft") this.move("left");
+            else if (this.lastPressedButton === "ArrowUp") this.move("up");
+            else if (this.lastPressedButton === "ArrowDown") this.move("down");
+            else this.move("no_move");
 
-        this.lastPressedButton = ""
+            this.lastPressedButton = ""
+        } else {
+            //TODO implementacja getujaca ruchy
+        }
     };
 
     render() {
