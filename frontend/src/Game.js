@@ -112,33 +112,22 @@ class Game extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.updateUnitPositions(this.pacman, data.pacman);
 
-                if(data.ghost_red.row !== this.ghost_red.row || data.ghost_red.col !== this.ghost_red.col) {
+                if(this.checkUnitPositionChanged(this.ghost_red, data,this.ghost_red)) {
                     this.clearUnitPosition(this.ghost_red);
                 }
-                this.updateUnitPositions(this.ghost_red, data.ghost_red);
-
-                if(data.ghost_cyan.row !== this.ghost_cyan.row || data.ghost_cyan.col !== this.ghost_cyan.col) {
+                if(this.checkUnitPositionChanged(this.ghost_cyan, data,this.ghost_cyan)) {
                     this.clearUnitPosition(this.ghost_cyan);
                 }
-                this.updateUnitPositions(this.ghost_cyan, data.ghost_cyan);
-
-                if(data.ghost_pink.row !== this.ghost_pink.row || data.ghost_pink.col !== this.ghost_pink.col) {
+                if(this.checkUnitPositionChanged(this.ghost_pink, data,this.ghost_pink)) {
                     this.clearUnitPosition(this.ghost_pink);
                 }
-                this.updateUnitPositions(this.ghost_pink, data.ghost_pink);
-
-                if(data.ghost_orange.row !== this.ghost_orange.row || data.ghost_orange.col !== this.ghost_orange.col) {
+                if(this.checkUnitPositionChanged(this.ghost_orange, data,this.ghost_orange)) {
                     this.clearUnitPosition(this.ghost_orange);
                 }
-                this.updateUnitPositions(this.ghost_orange, data.ghost_orange);
 
-                this.renderUnitPosition(this.pacman);
-                this.renderUnitPosition(this.ghost_red);
-                this.renderUnitPosition(this.ghost_cyan);
-                this.renderUnitPosition(this.ghost_pink);
-                this.renderUnitPosition(this.ghost_orange);
+                this.updateAllUnitPositions(data);
+                this.renderAllUnitsPositions();
 
                 if(data.state === "lose") {
                     document.getElementById("div-menu").style.display = "block";
@@ -159,23 +148,9 @@ class Game extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.clearUnitPosition(this.pacman);
-                this.clearUnitPosition(this.ghost_red);
-                this.clearUnitPosition(this.ghost_cyan);
-                this.clearUnitPosition(this.ghost_pink);
-                this.clearUnitPosition(this.ghost_orange);
-
-                this.updateUnitPositions(this.pacman, data.pacman);
-                this.updateUnitPositions(this.ghost_red, data.ghost_red);
-                this.updateUnitPositions(this.ghost_cyan, data.ghost_cyan);
-                this.updateUnitPositions(this.ghost_pink, data.ghost_pink);
-                this.updateUnitPositions(this.ghost_orange, data.ghost_orange);
-
-                this.renderUnitPosition(this.pacman);
-                this.renderUnitPosition(this.ghost_red);
-                this.renderUnitPosition(this.ghost_cyan);
-                this.renderUnitPosition(this.ghost_pink);
-                this.renderUnitPosition(this.ghost_orange);
+                this.clearAllUnitsPositions();
+                this.updateAllUnitPositions(data);
+                this.renderAllUnitsPositions();
             });
 
         this.gameInterval = setInterval(this.gameLife, 300);
@@ -194,6 +169,34 @@ class Game extends React.Component {
     updateUnitPositions = (unit, receivedData) => {
       unit.row = receivedData.row;
       unit.col = receivedData.col;
+    };
+
+    clearAllUnitsPositions = () => {
+        this.clearUnitPosition(this.pacman);
+        this.clearUnitPosition(this.ghost_red);
+        this.clearUnitPosition(this.ghost_cyan);
+        this.clearUnitPosition(this.ghost_pink);
+        this.clearUnitPosition(this.ghost_orange);
+    };
+
+    renderAllUnitsPositions = () => {
+        this.renderUnitPosition(this.pacman);
+        this.renderUnitPosition(this.ghost_red);
+        this.renderUnitPosition(this.ghost_cyan);
+        this.renderUnitPosition(this.ghost_pink);
+        this.renderUnitPosition(this.ghost_orange);
+    };
+
+    updateAllUnitPositions = (data) => {
+        this.updateUnitPositions(this.pacman, data.pacman);
+        this.updateUnitPositions(this.ghost_red, data.ghost_red);
+        this.updateUnitPositions(this.ghost_cyan, data.ghost_cyan);
+        this.updateUnitPositions(this.ghost_pink, data.ghost_pink);
+        this.updateUnitPositions(this.ghost_orange, data.ghost_orange);
+    };
+
+    checkUnitPositionChanged = (unit, receivedData) => {
+        return receivedData.row !== unit.row || receivedData.col !== unit.col
     };
 
     gameLife = () => {
