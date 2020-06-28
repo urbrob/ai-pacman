@@ -98,8 +98,7 @@ class Game extends React.Component {
         };
 
         if(direct !== "no_move") {
-            document.getElementById('div-table-col_' + this.pacman.row + '_'
-                + this.pacman.col + '_field').innerHTML = '';
+            this.clearUnitPosition(this.pacman);
         }
 
         fetch(this.pacmanApiUri + '/game', {
@@ -114,29 +113,25 @@ class Game extends React.Component {
                 this.pacman.row = data.pacman.row;
                 this.pacman.col = data.pacman.col;
                 if(data.ghost_red.row !== this.ghost_red.row || data.ghost_red.col !== this.ghost_red.col) {
-                    document.getElementById('div-table-col_' + this.ghost_red.row + '_'
-                        + this.ghost_red.col + '_field').innerHTML = '';
+                    this.clearUnitPosition(this.ghost_red);
                 }
                 this.ghost_red.row = data.ghost_red.row;
                 this.ghost_red.col = data.ghost_red.col;
 
                 if(data.ghost_cyan.row !== this.ghost_cyan.row || data.ghost_cyan.col !== this.ghost_cyan.col) {
-                    document.getElementById('div-table-col_' + this.ghost_cyan.row + '_'
-                        + this.ghost_cyan.col + '_field').innerHTML = '';
+                    this.clearUnitPosition(this.ghost_cyan);
                 }
                 this.ghost_cyan.row = data.ghost_cyan.row;
                 this.ghost_cyan.col = data.ghost_cyan.col;
 
                 if(data.ghost_pink.row !== this.ghost_pink.row || data.ghost_pink.col !== this.ghost_pink.col) {
-                    document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
-                        + this.ghost_pink.col + '_field').innerHTML = '';
+                    this.clearUnitPosition(this.ghost_pink);
                 }
                 this.ghost_pink.row = data.ghost_pink.row;
                 this.ghost_pink.col = data.ghost_pink.col;
 
                 if(data.ghost_orange.row !== this.ghost_orange.row || data.ghost_orange.col !== this.ghost_orange.col) {
-                    document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
-                        + this.ghost_orange.col + '_field').innerHTML = '';
+                    this.clearUnitPosition(this.ghost_orange);
                 }
                 this.ghost_orange.row = data.ghost_orange.row;
                 this.ghost_orange.col = data.ghost_orange.col;
@@ -171,16 +166,11 @@ class Game extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('div-table-col_' + this.pacman.row + '_'
-                    + this.pacman.col + '_field').innerHTML = '';
-                document.getElementById('div-table-col_' + this.ghost_red.row + '_'
-                    + this.ghost_red.col + '_field').innerHTML = '';
-                document.getElementById('div-table-col_' + this.ghost_cyan.row + '_'
-                    + this.ghost_cyan.col + '_field').innerHTML = '';
-                document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
-                    + this.ghost_pink.col + '_field').innerHTML = '';
-                document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
-                    + this.ghost_orange.col + '_field').innerHTML = '';
+                this.clearUnitPosition(this.pacman);
+                this.clearUnitPosition(this.ghost_red);
+                this.clearUnitPosition(this.ghost_cyan);
+                this.clearUnitPosition(this.ghost_pink);
+                this.clearUnitPosition(this.ghost_orange);
 
                 this.pacman.row = data.pacman.row;
                 this.pacman.col = data.pacman.col;
@@ -202,6 +192,11 @@ class Game extends React.Component {
         this.gameInterval = setInterval(this.gameLife, 300);
     };
 
+    clearUnitPosition = (unit) => {
+        document.getElementById('div-table-col_' + unit.row + '_'
+            + unit.col + '_field').innerHTML = '';
+    };
+
     gameLife = () => {
         if(this.gameType === "player") {
             if (this.lastPressedButton === "ArrowRight") this.move("right");
@@ -212,7 +207,7 @@ class Game extends React.Component {
 
             this.lastPressedButton = ""
         } else {
-            //TODO implementacja getujaca ruchy
+            //TODO implementacja tylko getujaca ruchy bo to ai
         }
     };
 
