@@ -45,6 +45,23 @@ class Game extends React.Component {
     lastPressedButton = "";
     gameInterval = null;
 
+    createMenu = () => {
+      return <div id="div-menu">
+          <div className="div-menu-button">
+            <button className="button" onClick={() => {
+                    document.getElementById("div-menu").style.display = "none";
+                    document.getElementById("div-table").style.display = "table";
+                    document.getElementById("Game-div").focus();
+                    this.startGame();
+                }
+            }>PLAYER VS GHOSTS</button>
+          </div>
+          <div className="div-menu-button">
+              <button className="button">AI VS GHOSTS</button>
+          </div>
+      </div>
+    };
+
     createBoard = () => {
         let board = [];
 
@@ -58,7 +75,7 @@ class Game extends React.Component {
             board.push(<div className="div-table-row">{children}</div>)
         });
 
-        return <div className="div-table">{board}</div>;
+        return <div className="div-table" id="div-table">{board}</div>;
     };
 
     handleKeyPressed = (event) => {
@@ -131,7 +148,10 @@ class Game extends React.Component {
                 document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
                     + this.ghost_orange.col + '_field').innerHTML = '<img src="' + orange_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
 
-                if(data.state === "lose") this.startGame();
+                if(data.state === "lose") {
+                    document.getElementById("div-menu").style.display = "block";
+                    document.getElementById("div-table").style.display = "none";
+                }
             });
     };
 
@@ -191,8 +211,8 @@ class Game extends React.Component {
     render() {
         return (
             <div className="Game" id="Game-div" onKeyDown={this.handleKeyPressed} tabIndex="0">
+                {this.createMenu()}
                 {this.createBoard()}
-                {this.startGame}
             </div>
         )
     }
