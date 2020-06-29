@@ -17,5 +17,5 @@ data_schema = {
     "ghost_4": position_schema,
     "direction": {"type": "string", "pattern": "[wsda]"}
   },
-  "required": ["pacman", "ghost_1", "ghost_2", "ghost_3", "ghost_4", "ghost_5"]
+  "required": ["pacman", "ghost_1", "ghost_2", "ghost_3", "ghost_4"]
 }

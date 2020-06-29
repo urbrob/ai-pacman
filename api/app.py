@@ -21,22 +21,27 @@ def create_app(testing=False):
         if erorrs:
             return {"status": erorrs.message}, 400
         else:
-            formated_data = tools.format_data_for_ai(request.get_json())
+            import pdb; pdb.set_trace()
+            formated_data = tools.format_data_for_ai(request_json)
             if formated_data:
                 utils.save_data_to_database(db, formated_data)
                 return {"status": "OK"}
             return {"status": "Not saved because data doesn't fit requirements"}, 400
 
 
-    @app.route("/api/predict_move")
+    @app.route("/api/predict_move", methods=["POST"])
     def predict_move_from_ai():
-        erorrs = utils.validate_if_entry_data_is_valid(request.get_json())
+        try:
+            request_json = request.get_json(force=True)
+        except BadRequest:
+            return {"status": "Missing request body"}, 400
+        errors = utils.validate_if_entry_data_is_valid(request_json)
         if errors:
-            return {"status": erorrs.message}, 400
+            return {"status": errors.message}, 400
         else:
-            formated_data = tools.format_data_for_ai(request.get_json())
-            predicted_move = utils.predicted_move_from_ai(db, formated_data)
-            return tools.format_predicted_move(predicted_move)
+            formated_data = tools.format_data_for_ai(request_json)
+            predicted_move = utils.predicted_move_from_ai(formated_data)
+            return {"direction": tools.format_predicted_move(predicted_move)}
 
 
     @app.route("/")
