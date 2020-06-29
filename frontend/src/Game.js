@@ -21,6 +21,7 @@ class Game extends React.Component {
 
     // replace it with your docker-machine default ip address ('docker-machine ip default' in CLI)
     pacmanApiUri = "http://192.168.99.100:5678";
+    dbSaveMoveUri = "http://192.168.99.100:5000/api/save_move";
 
     pacman = {
         "row": 1,
@@ -112,7 +113,9 @@ class Game extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
+
                 this.updateFrontendWithReceivedData(data);
+                this.saveMoveToDatabase(direct);
             });
     };
 
@@ -152,8 +155,35 @@ class Game extends React.Component {
         this.renderAllUnitsPositions();
 
         if(data.state === "lose") {
+            if(this.gameInterval) clearInterval(this.gameInterval);
             document.getElementById("div-menu").style.display = "block";
             document.getElementById("div-table").style.display = "none";
+        }
+    };
+
+    saveMoveToDatabase = (direct) => {
+        if(direct !== "no_move") {
+            let directForDb = "w";
+            if (direct === "down") directForDb = "s";
+            else if (direct === "left") directForDb = "a";
+            else if (direct === "right") directForDb = "d";
+
+
+            fetch(this.dbSaveMoveUri, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    pacman: {x: this.pacman.col, y: this.pacman.row},
+                    ghost_1: {x: this.ghost_red.col, y: this.ghost_red.row},
+                    ghost_2: {x: this.ghost_cyan.col, y: this.ghost_cyan.row},
+                    ghost_3: {x: this.ghost_pink.col, y: this.ghost_pink.row},
+                    ghost_4: {x: this.ghost_orange.col, y: this.ghost_orange.row},
+                    direction: directForDb
+                })
+            }).then(res => res.json())
+                .then(data => console.log("Saving move to database: " + data));
         }
     };
 
