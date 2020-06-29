@@ -24,23 +24,28 @@ class Game extends React.Component {
 
     pacman = {
         "row": 1,
-        "col": 1
+        "col": 1,
+        img: pacman_transparent_img
     };
     ghost_red = {
         row: 6,
-        col: 6
+        col: 6,
+        img: red_ghost_transparent_img
     };
     ghost_cyan = {
         row: 12,
-        col: 12
+        col: 12,
+        img: cyan_ghost_transparent_img
     };
     ghost_pink = {
         row: 6,
-        col: 12
+        col: 12,
+        img: pink_ghost_transparent_img
     };
     ghost_orange = {
         row: 12,
-        col: 6
+        col: 6,
+        img: orange_ghost_transparent_img
     };
     lastPressedButton = "";
     gameInterval = null;
@@ -50,23 +55,25 @@ class Game extends React.Component {
       return <div id="div-menu">
           <div className="div-menu-button">
             <button className="button" onClick={() => {
-                    document.getElementById("div-menu").style.display = "none";
-                    document.getElementById("div-table").style.display = "table";
-                    document.getElementById("Game-div").focus();
-                    this.gameType = "player";
-                    this.startGame();
+                    this.hideMenuAndStartGame("player")
             }}>PLAYER VS GHOSTS</button>
           </div>
           <div className="div-menu-button">
               <button className="button" onClick={ () => {
-                  document.getElementById("div-menu").style.display = "none";
-                  document.getElementById("div-table").style.display = "table";
-                  this.gameType = "ai";
-                  this.startGame();
+                  this.hideMenuAndStartGame("ai")
               }}>AI VS GHOSTS</button>
           </div>
       </div>
     };
+
+    hideMenuAndStartGame(type) {
+        document.getElementById("div-menu").style.display = "none";
+        document.getElementById("div-table").style.display = "table";
+        this.gameType = type;
+        if(this.gameType === "player")
+            document.getElementById("Game-div").focus();
+        this.startGame();
+    }
 
     createBoard = () => {
         let board = [];
@@ -91,13 +98,9 @@ class Game extends React.Component {
     };
 
     move = (direct) => {
-        const dataToPost = {
-            direction: direct
-        };
 
         if(direct !== "no_move") {
-            document.getElementById('div-table-col_' + this.pacman.row + '_'
-                + this.pacman.col + '_field').innerHTML = '';
+            this.clearUnitPosition(this.pacman);
         }
 
         fetch(this.pacmanApiUri + '/game', {
@@ -105,56 +108,53 @@ class Game extends React.Component {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(dataToPost)
+            body: JSON.stringify({ direction: direct })
         })
             .then(response => response.json())
             .then(data => {
-                this.pacman.row = data.pacman.row;
-                this.pacman.col = data.pacman.col;
-                if(data.ghost_red.row !== this.ghost_red.row || data.ghost_red.col !== this.ghost_red.col) {
-                    document.getElementById('div-table-col_' + this.ghost_red.row + '_'
-                        + this.ghost_red.col + '_field').innerHTML = '';
-                }
-                this.ghost_red.row = data.ghost_red.row;
-                this.ghost_red.col = data.ghost_red.col;
-
-                if(data.ghost_cyan.row !== this.ghost_cyan.row || data.ghost_cyan.col !== this.ghost_cyan.col) {
-                    document.getElementById('div-table-col_' + this.ghost_cyan.row + '_'
-                        + this.ghost_cyan.col + '_field').innerHTML = '';
-                }
-                this.ghost_cyan.row = data.ghost_cyan.row;
-                this.ghost_cyan.col = data.ghost_cyan.col;
-
-                if(data.ghost_pink.row !== this.ghost_pink.row || data.ghost_pink.col !== this.ghost_pink.col) {
-                    document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
-                        + this.ghost_pink.col + '_field').innerHTML = '';
-                }
-                this.ghost_pink.row = data.ghost_pink.row;
-                this.ghost_pink.col = data.ghost_pink.col;
-
-                if(data.ghost_orange.row !== this.ghost_orange.row || data.ghost_orange.col !== this.ghost_orange.col) {
-                    document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
-                        + this.ghost_orange.col + '_field').innerHTML = '';
-                }
-                this.ghost_orange.row = data.ghost_orange.row;
-                this.ghost_orange.col = data.ghost_orange.col;
-
-                document.getElementById('div-table-col_' + this.pacman.row + '_'
-                    + this.pacman.col + '_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_' + this.ghost_red.row + '_'
-                    + this.ghost_red.col + '_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_' + this.ghost_cyan.row + '_'
-                    + this.ghost_cyan.col + '_field').innerHTML = '<img src="' + cyan_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
-                    + this.ghost_pink.col + '_field').innerHTML = '<img src="' + pink_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
-                    + this.ghost_orange.col + '_field').innerHTML = '<img src="' + orange_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-
-                if(data.state === "lose") {
-                    document.getElementById("div-menu").style.display = "block";
-                    document.getElementById("div-table").style.display = "none";
-                }
+                this.updateFrontendWithReceivedData(data);
             });
+    };
+
+    fetchAIMove = () => {
+        fetch(this.pacmanApiUri + '/game', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+
+                if(this.checkUnitPositionChanged(this.pacman, data,this.pacman)) {
+                    this.clearUnitPosition(this.pacman);
+                }
+
+                this.updateFrontendWithReceivedData(data);
+            });
+    };
+
+    updateFrontendWithReceivedData = (data) => {
+        if(this.checkUnitPositionChanged(this.ghost_red, data,this.ghost_red)) {
+            this.clearUnitPosition(this.ghost_red);
+        }
+        if(this.checkUnitPositionChanged(this.ghost_cyan, data,this.ghost_cyan)) {
+            this.clearUnitPosition(this.ghost_cyan);
+        }
+        if(this.checkUnitPositionChanged(this.ghost_pink, data,this.ghost_pink)) {
+            this.clearUnitPosition(this.ghost_pink);
+        }
+        if(this.checkUnitPositionChanged(this.ghost_orange, data,this.ghost_orange)) {
+            this.clearUnitPosition(this.ghost_orange);
+        }
+
+        this.updateAllUnitPositions(data);
+        this.renderAllUnitsPositions();
+
+        if(data.state === "lose") {
+            document.getElementById("div-menu").style.display = "block";
+            document.getElementById("div-table").style.display = "none";
+        }
     };
 
     startGame = () => {
@@ -169,36 +169,14 @@ class Game extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('div-table-col_' + this.pacman.row + '_'
-                    + this.pacman.col + '_field').innerHTML = '';
-                document.getElementById('div-table-col_' + this.ghost_red.row + '_'
-                    + this.ghost_red.col + '_field').innerHTML = '';
-                document.getElementById('div-table-col_' + this.ghost_cyan.row + '_'
-                    + this.ghost_cyan.col + '_field').innerHTML = '';
-                document.getElementById('div-table-col_' + this.ghost_pink.row + '_'
-                    + this.ghost_pink.col + '_field').innerHTML = '';
-                document.getElementById('div-table-col_' + this.ghost_orange.row + '_'
-                    + this.ghost_orange.col + '_field').innerHTML = '';
-
-                this.pacman.row = data.pacman.row;
-                this.pacman.col = data.pacman.col;
-                this.ghost_red.row = data.ghost_red.row;
-                this.ghost_red.col = data.ghost_red.col;
-                this.ghost_cyan.row = data.ghost_cyan.row;
-                this.ghost_cyan.col = data.ghost_cyan.col;
-                this.ghost_pink.row = data.ghost_pink.row;
-                this.ghost_pink.col = data.ghost_pink.col;
-                this.ghost_orange.row = data.ghost_orange.row;
-                this.ghost_orange.col = data.ghost_orange.col;
-                document.getElementById('div-table-col_1_1_field').innerHTML = '<img src="' + pacman_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_6_6_field').innerHTML = '<img src="' + red_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_12_12_field').innerHTML = '<img src="' + cyan_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_6_12_field').innerHTML = '<img src="' + pink_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
-                document.getElementById('div-table-col_12_6_field').innerHTML = '<img src="' + orange_ghost_transparent_img + '" width="25px" height="25px" align="top"/>';
+                this.clearAllUnitsPositions();
+                this.updateAllUnitPositions(data);
+                this.renderAllUnitsPositions();
             });
 
         this.gameInterval = setInterval(this.gameLife, 300);
     };
+
 
     gameLife = () => {
         if(this.gameType === "player") {
@@ -210,8 +188,51 @@ class Game extends React.Component {
 
             this.lastPressedButton = ""
         } else {
-            //TODO implementacja getujaca ruchy
+            this.fetchAIMove();
         }
+    };
+
+    clearUnitPosition = (unit) => {
+        document.getElementById('div-table-col_' + unit.row + '_'
+            + unit.col + '_field').innerHTML = '';
+    };
+
+    renderUnitPosition = (unit) => {
+        document.getElementById('div-table-col_' + unit.row + '_'
+            + unit.col + '_field').innerHTML = '<img src="' + unit.img + '" width="25px" height="25px" align="top"/>';
+    };
+
+    updateUnitPositions = (unit, receivedData) => {
+      unit.row = receivedData.row;
+      unit.col = receivedData.col;
+    };
+
+    clearAllUnitsPositions = () => {
+        this.clearUnitPosition(this.pacman);
+        this.clearUnitPosition(this.ghost_red);
+        this.clearUnitPosition(this.ghost_cyan);
+        this.clearUnitPosition(this.ghost_pink);
+        this.clearUnitPosition(this.ghost_orange);
+    };
+
+    renderAllUnitsPositions = () => {
+        this.renderUnitPosition(this.pacman);
+        this.renderUnitPosition(this.ghost_red);
+        this.renderUnitPosition(this.ghost_cyan);
+        this.renderUnitPosition(this.ghost_pink);
+        this.renderUnitPosition(this.ghost_orange);
+    };
+
+    updateAllUnitPositions = (data) => {
+        this.updateUnitPositions(this.pacman, data.pacman);
+        this.updateUnitPositions(this.ghost_red, data.ghost_red);
+        this.updateUnitPositions(this.ghost_cyan, data.ghost_cyan);
+        this.updateUnitPositions(this.ghost_pink, data.ghost_pink);
+        this.updateUnitPositions(this.ghost_orange, data.ghost_orange);
+    };
+
+    checkUnitPositionChanged = (unit, receivedData) => {
+        return receivedData.row !== unit.row || receivedData.col !== unit.col
     };
 
     render() {
