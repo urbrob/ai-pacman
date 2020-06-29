@@ -16,10 +16,10 @@ class Unit {
             col: this.position.col
         };
 
-        if(direction === "right") this.position.col += 1;
-        else if(direction === "left") this.position.col -= 1;
-        else if(direction === "up") this.position.row -= 1;
-        else if(direction === "down") this.position.row += 1;
+        if(direction === "right" || direction === "d") this.position.col += 1;
+        else if(direction === "left" || direction === "a") this.position.col -= 1;
+        else if(direction === "up" || direction === "w") this.position.row -= 1;
+        else if(direction === "down" || direction === "s") this.position.row += 1;
 
         if(direction !== "no_move") {
             if (!this.validateMove(this.position)) {
