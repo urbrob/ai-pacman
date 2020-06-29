@@ -112,28 +112,49 @@ class Game extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-
-                if(this.checkUnitPositionChanged(this.ghost_red, data,this.ghost_red)) {
-                    this.clearUnitPosition(this.ghost_red);
-                }
-                if(this.checkUnitPositionChanged(this.ghost_cyan, data,this.ghost_cyan)) {
-                    this.clearUnitPosition(this.ghost_cyan);
-                }
-                if(this.checkUnitPositionChanged(this.ghost_pink, data,this.ghost_pink)) {
-                    this.clearUnitPosition(this.ghost_pink);
-                }
-                if(this.checkUnitPositionChanged(this.ghost_orange, data,this.ghost_orange)) {
-                    this.clearUnitPosition(this.ghost_orange);
-                }
-
-                this.updateAllUnitPositions(data);
-                this.renderAllUnitsPositions();
-
-                if(data.state === "lose") {
-                    document.getElementById("div-menu").style.display = "block";
-                    document.getElementById("div-table").style.display = "none";
-                }
+                this.updateFrontendWithReceivedData(data);
             });
+    };
+
+    fetchAIMove = () => {
+        fetch(this.pacmanApiUri + '/game', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+
+                if(this.checkUnitPositionChanged(this.pacman, data,this.pacman)) {
+                    this.clearUnitPosition(this.pacman);
+                }
+
+                this.updateFrontendWithReceivedData(data);
+            });
+    };
+
+    updateFrontendWithReceivedData = (data) => {
+        if(this.checkUnitPositionChanged(this.ghost_red, data,this.ghost_red)) {
+            this.clearUnitPosition(this.ghost_red);
+        }
+        if(this.checkUnitPositionChanged(this.ghost_cyan, data,this.ghost_cyan)) {
+            this.clearUnitPosition(this.ghost_cyan);
+        }
+        if(this.checkUnitPositionChanged(this.ghost_pink, data,this.ghost_pink)) {
+            this.clearUnitPosition(this.ghost_pink);
+        }
+        if(this.checkUnitPositionChanged(this.ghost_orange, data,this.ghost_orange)) {
+            this.clearUnitPosition(this.ghost_orange);
+        }
+
+        this.updateAllUnitPositions(data);
+        this.renderAllUnitsPositions();
+
+        if(data.state === "lose") {
+            document.getElementById("div-menu").style.display = "block";
+            document.getElementById("div-table").style.display = "none";
+        }
     };
 
     startGame = () => {
@@ -167,7 +188,7 @@ class Game extends React.Component {
 
             this.lastPressedButton = ""
         } else {
-            //TODO implementacja tylko getujaca ruchy bo to ai
+            this.fetchAIMove();
         }
     };
 
