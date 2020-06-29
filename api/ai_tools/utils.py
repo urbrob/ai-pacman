@@ -1,4 +1,4 @@
-#from keras.models import load_model
+from tensorflow.keras.models import load_model
 from jsonschema import exceptions, validate
 from ai_tools.schema import data_schema
 model = None # Model for our instance, we use it as global to do not reload it every time
@@ -25,7 +25,8 @@ def _predict_move_from_ai(data):
 
 
 def predicted_move_from_ai(data):
+    global model
     if model is None:
-        global models
-        model = load_model("pacman.h5")
+        import os
+        model = load_model("api/ai_tools/pacman.h5")
     return _predict_move_from_ai(data)
